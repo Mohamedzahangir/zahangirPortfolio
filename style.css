@@ -277,6 +277,11 @@ body.dark-mode .logo-img {
     letter-spacing: 0.5px;
 }
 
+.home-scroll-down {
+    display: none;
+    /* Hide on regular view unless intended */
+}
+
 /* ===== ABOUT SECTION ===== */
 #about {
     padding-top: 100px;
@@ -698,70 +703,284 @@ textarea.form-input {
    RESPONSIVE (MOBILE LAYOUT)
    ============================================================ */
 @media (max-width: 900px) {
-    .section {
-        padding: 60px 20px;
+
+    /* Navbar: Embedded vertical sidebar on the right */
+    .navbar {
+        height: auto;
+        padding: 15px;
+        align-items: flex-start;
+        background: transparent !important;
+        pointer-events: none;
+    }
+
+    .nav-logo {
+        pointer-events: auto;
+    }
+
+    .nav-logo .logo-img {
+        height: 50px;
+    }
+
+    .theme-toggle {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        pointer-events: auto;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1rem;
     }
 
     .nav-links {
-        display: none;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        position: absolute;
+        top: 65px;
+        right: 20px;
+        gap: 8px;
+        pointer-events: auto;
+    }
+
+    .nav-link {
+        font-size: 1.3rem;
+        font-weight: 500;
+    }
+
+    .nav-link.active {
+        font-weight: 700;
+        color: var(--text-dark);
+    }
+
+    .section {
+        padding: 30px 20px 20px 20px;
+    }
+
+    .deco img {
+        width: 150px !important;
+        /* Scale down decorations to fit mobile neatly */
+    }
+
+    /* Exact positioning for Home decorations matching mobile Figma */
+    #home>.deco {
+        top: -10px !important;
+        right: -30px !important;
+    }
+
+    #home .home-illustration>.deco:nth-of-type(1) {
+        top: -20px !important;
+        left: -30px !important;
+    }
+
+    #home .home-illustration>.deco:nth-of-type(2) {
+        bottom: 0px !important;
+        right: -30px !important;
+    }
+
+    /* Home Section */
+    #home {
+        padding-top: 15px;
+        min-height: auto;
+        position: relative;
+        /* For the absolute arrow */
     }
 
     .home-content {
         grid-template-columns: 1fr;
         text-align: center;
+        gap: 10px;
     }
 
     .home-portrait {
         order: -1;
+        max-width: 180px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+    }
+
+    .hi-text {
+        font-size: 1.4rem;
+        margin-bottom: 2px;
+    }
+
+    .hero-name {
+        font-size: 1.6rem;
+        margin-bottom: 5px;
+        padding: 0 5px;
+        line-height: 1.2;
+    }
+
+    .hero-desc {
+        font-size: 0.9rem;
+        margin: 0 auto 15px auto;
+        max-width: 320px;
+        line-height: 1.3;
     }
 
     .hero-buttons {
         justify-content: center;
+        gap: 12px;
     }
 
+    .home-scroll-down {
+        display: flex;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-size: 1.5rem;
+        color: var(--text-dark);
+        z-index: 10;
+        animation: floatPortrait 2s ease-in-out infinite;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    /* About Section */
     .about-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .about-col-1,
+    .education-column {
+        display: contents;
+        /* Unbox for reordering */
+    }
+
+    .section-title.about-title {
+        order: 1;
+        text-align: left;
+    }
+
+    .subsection-title.intro-title {
+        order: 2;
+        margin-bottom: 5px;
+    }
+
+    .about-text {
+        order: 3;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 2;
     }
 
     .about-portrait {
-        justify-content: center;
-        order: -1;
-        /* optionally push to top */
+        order: 4;
+        position: absolute;
+        right: 10px;
+        top: 250px;
+        /* Adjust based on content flow */
+        width: 150px;
+        opacity: 0.8;
+        z-index: 1;
     }
 
+    .subsection-title.edu-title {
+        order: 5;
+        margin-top: 20px;
+    }
+
+    .edu-card {
+        order: 6;
+    }
+
+    .subsection-title.skills-title {
+        order: 7;
+        margin-top: 20px;
+    }
+
+    .skills-container {
+        order: 8;
+        justify-content: flex-start;
+    }
+
+    /* Projects Section */
     .projects-grid {
         grid-template-columns: 1fr;
-        grid-template-rows: auto;
+        grid-auto-rows: minmax(250px, auto);
+        gap: 20px;
     }
 
-    /* Cancel complex row hover expansion on mobile */
     .projects-grid.is-morphing {
         grid-template-columns: 1fr;
+        height: auto;
+        overflow: visible;
+        padding-right: 0;
     }
 
     .project-card.is-expanded {
         grid-column: 1;
         grid-row: auto;
+        position: relative;
+        height: auto;
+        /* Let it size naturally or set a specific fixed height if desired */
+        min-height: 400px;
     }
 
     .project-card {
-        height: 350px;
+        height: 250px;
+        /* Standard vertical list height */
     }
 
+    .projects-scroll-controls {
+        display: none !important;
+        /* Hide scroll arrows on mobile, rely on native scroll */
+    }
+
+    /* Connect Section */
     .connect-grid {
         grid-template-columns: 1fr;
-        text-align: center;
+        gap: 30px;
+    }
+
+    .contact-area {
+        order: 1;
+    }
+
+    /* Remove huge padding on form container */
+    .contact-form-container {
+        padding: 25px 20px;
+    }
+
+    /* Position submit button inside the message box */
+    .form-group:last-of-type {
+        position: relative;
+        margin-bottom: 0;
+    }
+
+    .submit-btn {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        margin: 0;
+        font-size: 1rem;
     }
 
     .connect-socials {
         flex-direction: row;
         justify-content: center;
+        gap: 15px;
     }
 
+    .connect-portrait {
+        display: none;
+        /* Hide on mobile per Figma */
+    }
+
+    /* Footer */
     .footer {
         flex-direction: column;
         gap: 20px;
         text-align: center;
+        padding: 30px 20px;
     }
 }
 

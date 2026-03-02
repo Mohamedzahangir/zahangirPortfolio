@@ -259,6 +259,8 @@ cards.forEach(card => {
 
     // Desktop Hover logic (Preview)
     card.addEventListener('mouseenter', () => {
+        // Disable hover on mobile screens (max-width 900px)
+        if (window.innerWidth <= 900) return;
         if (!isLocked) {
             handleMorph(card, true);
         }
