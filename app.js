@@ -139,19 +139,57 @@ function handleSubmit(event) {
 
     console.log("Form Submitted", { name, email, message });
 
-    // Quick UI feedback for the user
+    const targetEmail = "mohamedzahangiralimolla@gmail.com";
+    const subject = "via portfolio";
+
+    // Update UI to show sending state
     const btn = event.target.querySelector('button');
     const originalText = btn.innerHTML;
-    btn.innerText = "Sent!";
-    btn.style.backgroundColor = "var(--text-dark)";
-    btn.style.color = "var(--bg)";
+    btn.innerHTML = "<span style='font-size: 0.9rem'>Sending...</span>";
+    btn.disabled = true;
 
-    setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.style.backgroundColor = "";
-        btn.style.color = "";
-        event.target.reset();
-    }, 3000);
+    // Send the email via FormSubmit's AJAX API silently in the background
+    fetch(`https://formsubmit.co/ajax/${targetEmail}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            _subject: subject,
+            name: name,
+            email: email,
+            message: message
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Quick UI feedback for the user on success
+            btn.innerHTML = "<i class=\"fa fa-check\"></i>";
+            btn.style.backgroundColor = "var(--text-dark)";
+            btn.style.color = "var(--bg)";
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.backgroundColor = "";
+                btn.style.color = "";
+                btn.disabled = false;
+                event.target.reset();
+            }, 3000);
+        })
+        .catch(error => {
+            console.error("Form submission error", error);
+            btn.innerHTML = "<i class=\"fa fa-times\"></i>";
+            btn.style.backgroundColor = "#ff4c4c";
+            btn.style.color = "#fff";
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.backgroundColor = "";
+                btn.style.color = "";
+                btn.disabled = false;
+            }, 3000);
+        });
 }
 
 // --- SMOOTH SCROLLING (Lenis) ---
@@ -257,15 +295,6 @@ let isLocked = false; // New state to track if a card is permanently clicked ope
 cards.forEach(card => {
     const closeBtn = card.querySelector('.project-close-btn');
 
-    // Desktop Hover logic (Preview)
-    card.addEventListener('mouseenter', () => {
-        // Disable hover on mobile screens (max-width 900px)
-        if (window.innerWidth <= 900) return;
-        if (!isLocked) {
-            handleMorph(card, true);
-        }
-    });
-
     // Mobile/Desktop Click Toggle logic (Lock)
     card.addEventListener('click', (e) => {
         // If clicking the close button on an active card, ignore here (handled by closeBtn listener)
@@ -288,13 +317,6 @@ cards.forEach(card => {
             grid.classList.remove('is-locked');
             handleMorph(null, false);
         });
-    }
-});
-
-// Grid mouseleave: revert if leaving the grid, but ONLY if not locked
-grid.addEventListener('mouseleave', () => {
-    if (!isLocked) {
-        handleMorph(null, false);
     }
 });
 
