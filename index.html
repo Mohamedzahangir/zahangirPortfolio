@@ -524,11 +524,11 @@
 
     <!-- ===== ABOUT SECTION ===== -->
     <section class="section" id="about">
+        <h2 class="section-title about-title font-script scroll-animate slide-up">About</h2>
         <div class="about-grid">
 
             <!-- Column 1: Intro + Skills -->
             <div class="about-col-1">
-                <h2 class="section-title about-title font-script scroll-animate slide-up">About</h2>
                 <h3 class="subsection-title intro-title font-script scroll-animate slide-up delay-100">Intro :-</h3>
                 <p class="about-text font-sans scroll-animate slide-up delay-200">
                     Hi, I'm Mohd. Zahangir, a B.Tech AI & Data Science student with a passion for building intelligent,
@@ -539,19 +539,6 @@
                     impact.
                 </p>
 
-                <h3 class="subsection-title skills-title font-script scroll-animate slide-up delay-300">skills:-</h3>
-                <div class="skills-container scroll-animate slide-up delay-400">
-                    <div class="skill-pill neu-flat font-sans">HTML</div>
-                    <div class="skill-pill neu-flat font-sans">SQL</div>
-                    <div class="skill-pill neu-flat font-sans">CSS</div>
-                    <div class="skill-pill neu-flat font-sans">PYTHON</div>
-                    <div class="skill-pill neu-flat font-sans">JAVA SCRIPT</div>
-                    <div class="skill-pill neu-flat font-sans">N8N</div>
-                    <div class="skill-pill neu-flat font-sans">SPLINE</div>
-                    <div class="skill-pill neu-flat font-sans">GITHUB</div>
-                    <div class="skill-pill neu-flat font-sans">FIGMA</div>
-                    <div class="skill-pill neu-flat font-sans">C++</div>
-                </div>
             </div>
 
             <!-- Column 2: Education Cards -->
@@ -591,6 +578,37 @@
                 <img src="assets/v46_28.png" alt="Zahangir portrait illustration">
             </div>
 
+            <!-- Full Width Row: Skills -->
+            <h3 class="subsection-title skills-title font-script scroll-animate slide-up delay-300">skills:-</h3>
+            <div class="skills-container scroll-animate slide-up delay-400" id="skillsContainer">
+                <!-- Top Industry Skills (Always visible) -->
+                <div class="skill-pill neu-flat font-sans">PYTHON</div>
+                <div class="skill-pill neu-flat font-sans">JAVA SCRIPT</div>
+                <div class="skill-pill neu-flat font-sans">SQL</div>
+                <div class="skill-pill neu-flat font-sans">JAVA</div>
+                <div class="skill-pill neu-flat font-sans">GENERATIVE AI</div>
+                <div class="skill-pill neu-flat font-sans">HTML</div>
+                <div class="skill-pill neu-flat font-sans">CSS</div>
+                <div class="skill-pill neu-flat font-sans">GITHUB</div>
+
+                <!-- Secondary Skills (Hidden on mobile by default) -->
+                <div class="skill-pill neu-flat font-sans hide-mobile">DATA VISUALIZATION</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">AI WORKFLOW</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">HUGGING FACE</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">KAGGLE</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">IOT</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">ARDUINO</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">TAILWIND CSS</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">BOOTSTRAP</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">COMPUTER HARDWARE</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">N8N</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">SPLINE</div>
+                <div class="skill-pill neu-flat font-sans hide-mobile">C++</div>
+
+                <button class="neu-btn show-more-skills-btn font-sans" id="showMoreSkillsBtn"
+                    onclick="toggleMobileSkills()">Show More <i class="fas fa-chevron-down"></i></button>
+            </div>
+
         </div>
     </section>
 
@@ -603,10 +621,52 @@
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
-                    <div class="p-card-img-placeholder"></div>
+                    <!-- Visual banner. Use class styling, possibly a tech icon later -->
+                    <div class="p-card-img-placeholder neu-inset"
+                        style="display:flex; align-items:center; justify-content:center; font-size: 2.5rem; border-top-left-radius: 12px; border-top-right-radius: 12px; background:#fff;">
+                        <i class="fab fa-linkedin" style="color: #FBF6E2;"></i>
+                    </div>
                     <div class="p-card-details">
-                        <h4 class="p-card-title font-script">Project 1</h4>
-                        <span class="p-card-tag font-sans">UI/UX</span>
+                        <h4 class="p-card-title font-script">LinkedIn Auto Post Agent</h4>
+                        <span class="p-card-tag font-sans">Full Stack / API Dev</span>
+                    </div>
+                    <!-- Hidden Expanded Content -->
+                    <div class="p-card-expanded-content" style="padding: 25px; overflow-y: auto;">
+                        <hr style="border:none; border-bottom: 2px dashed rgba(2,2,2,0.1); margin-bottom: 20px;">
+
+                        <h5 class="font-ans"
+                            style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 15px; font-weight:600;"><i
+                                class="fas fa-tools" style="margin-right: 8px;"></i>Tech Stack</h5>
+                        <div class="skills-container" style="gap: 10px; margin-bottom: 25px;">
+                            <span class="skill-pill neu-flat font-sans"
+                                style="padding: 5px 12px; font-size: 0.75rem;">HTML & CSS</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="padding: 5px 12px; font-size: 0.75rem;">JavaScript</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="padding: 5px 12px; font-size: 0.75rem;">Node.js</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="padding: 5px 12px; font-size: 0.75rem;">Express.js</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="padding: 5px 12px; font-size: 0.75rem;">LinkedIn API</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="padding: 5px 12px; font-size: 0.75rem;">OAuth 2.0</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="padding: 5px 12px; font-size: 0.75rem;">OpenID Connect</span>
+                        </div>
+
+                        <h5 class="font-ans"
+                            style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;"><i
+                                class="fas fa-cog" style="margin-right: 8px;"></i>Details</h5>
+                        <ul class="font-sans"
+                            style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; padding-left: 20px; text-transform: none; letter-spacing: normal;">
+                            <li style="margin-bottom: 8px;">Implemented full 3-Legged OAuth flow from scratch.</li>
+                            <li style="margin-bottom: 8px;">Authorization code exchange for access token.</li>
+                            <li style="margin-bottom: 8px;">Scope handling (openid, profile, w_member_social).</li>
+                            <li style="margin-bottom: 8px;">Extracted member ID using OpenID.</li>
+                            <li style="margin-bottom: 8px;">Built secure backend publishing module.</li>
+                            <li style="margin-bottom: 8px;">Automated LinkedIn post publishing via official API.</li>
+                            <li style="margin-bottom: 8px;">Secured credentials using environment variables (.env).</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="project-card scroll-animate slide-up delay-100" id="proj2">
@@ -633,10 +693,48 @@
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
-                    <div class="p-card-img-placeholder"></div>
+                    <!-- Visual banner -->
+                    <div class="p-card-img-placeholder neu-inset"
+                        style="display:flex; align-items:center; justify-content:center; font-size: 2.5rem; border-radius: 0; background:#f0f2f5;">
+                        <i class="fab fa-linkedin" style="color: #FBF6E2;"></i>
+                    </div>
                     <div class="p-card-details">
-                        <h4 class="p-card-title font-script">Project 4</h4>
-                        <span class="p-card-tag font-sans">Design System</span>
+                        <h4 class="p-card-title font-script" style="font-size: 1.1rem; margin-bottom: 3px;">LinkedIn
+                            Auto Post Agent</h4>
+                        <span class="p-card-tag font-sans" style="font-size: 0.8rem;">API Dev</span>
+                    </div>
+                    <!-- Hidden Expanded Content -->
+                    <div class="p-card-expanded-content">
+                        <!-- Tech Stack Section -->
+                        <h5 class="font-sans expanded-heading"><i class="fas fa-tools"></i> <span>Tech Stack</span></h5>
+                        <div class="skills-container" style="gap: 8px; margin-bottom: 25px; display:flex;">
+                            <span class="skill-pill neu-flat font-sans"
+                                style="font-size: 0.70rem; padding: 4px 10px;">HTML & CSS</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="font-size: 0.70rem; padding: 4px 10px;">JavaScript</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="font-size: 0.70rem; padding: 4px 10px;">Node.js</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="font-size: 0.70rem; padding: 4px 10px;">Express.js</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="font-size: 0.70rem; padding: 4px 10px;">LinkedIn API</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="font-size: 0.70rem; padding: 4px 10px;">OAuth 2.0</span>
+                            <span class="skill-pill neu-flat font-sans"
+                                style="font-size: 0.70rem; padding: 4px 10px;">OpenID</span>
+                        </div>
+
+                        <!-- Details Section -->
+                        <h5 class="font-sans expanded-heading"><i class="fas fa-cogs"></i> <span>Details</span></h5>
+                        <ul class="font-sans expanded-details-list">
+                            <li>Implemented full 3-Legged OAuth flow from scratch.</li>
+                            <li>Authorization code exchange for access token.</li>
+                            <li>Scope handling (openid, profile, w_member_social).</li>
+                            <li>Extracted member ID using OpenID.</li>
+                            <li>Built secure backend publishing module.</li>
+                            <li>Automated LinkedIn post publishing via official API.</li>
+                            <li>Secured credentials using environment variables (.env).</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="project-card scroll-animate slide-up delay-400" id="proj5">

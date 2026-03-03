@@ -269,12 +269,12 @@ const revealObserverOptions = {
     threshold: 0.15 // Trigger when 15% of the element is visible
 };
 
-const revealObserver = new IntersectionObserver((entries, observer) => {
+const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('show');
-            // Stop observing once the animation has been triggered
-            observer.unobserve(entry.target);
+        } else {
+            entry.target.classList.remove('show');
         }
     });
 }, revealObserverOptions);
@@ -402,4 +402,18 @@ if (upArrow && downArrow) {
         // Use requestAnimationFrame to debounce the visual update slightly and avoid jank
         requestAnimationFrame(updateScrollArrows);
     });
+}
+
+// --- MOBILE SKILLS TOGGLE ---
+function toggleMobileSkills() {
+    const skillsContainer = document.getElementById('skillsContainer');
+    const btn = document.getElementById('showMoreSkillsBtn');
+
+    if (skillsContainer.classList.contains('expanded')) {
+        skillsContainer.classList.remove('expanded');
+        btn.innerHTML = 'Show More <i class="fas fa-chevron-down"></i>';
+    } else {
+        skillsContainer.classList.add('expanded');
+        btn.innerHTML = 'Show Less <i class="fas fa-chevron-up"></i>';
+    }
 }

@@ -309,6 +309,7 @@ body.dark-mode .logo-img {
     font-size: 2rem;
     color: var(--text-dark);
     margin-bottom: 15px;
+    margin-top: 0;
 }
 
 .about-text {
@@ -319,7 +320,13 @@ body.dark-mode .logo-img {
 }
 
 /* Skills Pills Container */
+.subsection-title.skills-title {
+    grid-column: 1 / -1;
+    margin-top: 20px;
+}
+
 .skills-container {
+    grid-column: 1 / -1;
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
@@ -343,11 +350,27 @@ body.dark-mode .logo-img {
         -8px -8px 16px var(--shadow-light);
 }
 
+.show-more-skills-btn {
+    display: none;
+    /* Hidden on desktop */
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 /* Education Cards */
 .education-column {
     display: flex;
     flex-direction: column;
     gap: 25px;
+}
+
+.education-column .subsection-title {
+    margin-top: 0;
 }
 
 .edu-card {
@@ -577,6 +600,39 @@ body.dark-mode .logo-img {
     padding-top: 12px;
     z-index: 1;
     background: var(--bg);
+}
+
+/* Expanded View Content Controls */
+.p-card-expanded-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.project-card.is-expanded .p-card-expanded-content {
+    display: block;
+    opacity: 1;
+}
+
+/* Expanded List Detail Items styling inside project structure */
+.expanded-heading {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.expanded-details-list {
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding-left: 20px;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.expanded-details-list li {
+    margin-bottom: 8px;
 }
 
 /* We gently scale the text slightly because the space gets extremely large */
@@ -869,20 +925,19 @@ textarea.form-input {
     }
 
     .section-title.about-title {
-        grid-column: 1 / 3;
-        grid-row: 1;
         text-align: left;
+        margin-bottom: 20px;
     }
 
     .subsection-title.intro-title {
         grid-column: 1 / 3;
-        grid-row: 2;
+        grid-row: 1;
         margin-bottom: 5px;
     }
 
     .about-text {
         grid-column: 1 / 2;
-        grid-row: 3;
+        grid-row: 2;
         margin-bottom: 20px;
         position: relative;
         z-index: 2;
@@ -891,7 +946,7 @@ textarea.form-input {
 
     .about-portrait {
         grid-column: 2 / 3;
-        grid-row: 3;
+        grid-row: 2;
         width: 100%;
         margin-top: 10px;
         opacity: 0.9;
@@ -905,7 +960,7 @@ textarea.form-input {
     .subsection-title.skills-title {
         grid-column: 1 / 3;
         grid-row: 4;
-        margin-top: 20px;
+        margin-top: 40px;
     }
 
     .skills-container {
@@ -914,12 +969,27 @@ textarea.form-input {
         justify-content: flex-start;
     }
 
+    .skill-pill.hide-mobile {
+        display: none;
+    }
+
+    /* When expanded, show the hidden skills */
+    .skills-container.expanded .skill-pill.hide-mobile {
+        display: flex;
+    }
+
+    .show-more-skills-btn {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+    }
+
     .education-column {
         display: flex;
         flex-direction: column;
         gap: 25px;
         grid-column: 1 / 3;
-        grid-row: 6;
+        grid-row: 3;
     }
 
     /* Projects Section */
