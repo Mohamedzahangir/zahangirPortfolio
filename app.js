@@ -72,6 +72,7 @@ window.addEventListener('load', () => {
 const themeToggle = document.getElementById('themeToggle');
 const body = document.body;
 const toggleIcon = themeToggle.querySelector('.toggleIcon');
+const favicon = document.getElementById('favicon');
 
 // --- THEME TOGGLE (LIGHT/DARK MODE) ---
 function toggleTheme() {
@@ -81,10 +82,12 @@ function toggleTheme() {
         body.classList.remove('light-mode');
         themeToggle.innerHTML = '<span class="toggle-icon">&#9789;</span>'; // Moon icon
         localStorage.setItem('theme', 'dark');
+        if (favicon) favicon.href = 'assets/dark logo.png';
     } else {
         body.classList.add('light-mode');
         themeToggle.innerHTML = '<span class="toggle-icon">&#9728;</span>'; // Sun icon
         localStorage.setItem('theme', 'light');
+        if (favicon) favicon.href = 'assets/light logo.png';
     }
 }
 
@@ -96,6 +99,9 @@ function toggleTheme() {
         body.classList.add('dark-mode');
         body.classList.remove('light-mode');
         themeToggle.innerHTML = '<span class="toggle-icon">&#9789;</span>'; // Moon icon
+        if (favicon) favicon.href = 'assets/dark logo.png';
+    } else {
+        if (favicon) favicon.href = 'assets/light logo.png';
     }
 })();
 
