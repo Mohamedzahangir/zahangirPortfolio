@@ -1005,29 +1005,79 @@ textarea.form-input {
     }
 
     .projects-grid.is-morphing {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(20, minmax(200px, 1fr));
+        /* Very wide grid for horizontal sliding */
+        grid-template-rows: auto 200px;
+        /* Top row for expanded, second row for thumbnails */
+        grid-auto-flow: column;
+        gap: 20px;
         height: auto;
-        overflow: visible;
+        overflow-x: auto;
+        overflow-y: hidden;
         padding-right: 0;
+        padding-bottom: 20px;
+        /* Space for scrollbar or shadow if any */
+        scroll-behavior: smooth;
+        /* Let's give it full width so scrolling is nice */
+        width: 100%;
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+        /* IE/Edge */
+    }
+
+    .projects-grid.is-morphing::-webkit-scrollbar {
+        display: none;
+        /* Chrome/Safari */
+    }
+
+    .projects-grid.is-morphing .project-card:not(.is-expanded) {
+        grid-row: 2 !important;
+        /* Force to bottom row */
+        grid-column: auto !important;
+        /* Flow horizontally */
+        height: 200px;
     }
 
     .project-card.is-expanded {
-        grid-column: 1;
-        grid-row: auto;
-        position: relative;
+        grid-column: 1 / span 20;
+        /* Span the whole wide top row so it stays inside scrolling area, OR position sticky */
+        grid-row: 1;
+        position: sticky;
+        left: 0;
+        width: calc(100vw - 80px);
+        /* 100vw minus padding */
         height: auto;
-        /* Let it size naturally or set a specific fixed height if desired */
-        min-height: 400px;
-    }
-
-    .project-card {
-        height: 250px;
-        /* Standard vertical list height */
+        min-height: 350px;
+        z-index: 10;
+        margin-bottom: 10px;
     }
 
     .projects-scroll-controls {
-        display: none !important;
-        /* Hide scroll arrows on mobile, rely on native scroll */
+        display: flex !important;
+        flex-direction: row;
+        position: static;
+        /* Place it below the grid naturally */
+        width: 100%;
+        justify-content: center;
+        gap: 30px;
+        padding: 0;
+        margin-top: 20px;
+        z-index: 20;
+    }
+
+    /* Rotate arrows to point left/right on mobile */
+    .scroll-arrow.up-arrow {
+        transform: rotate(-90deg);
+    }
+
+    .scroll-arrow.down-arrow {
+        transform: rotate(-90deg);
+    }
+
+    .scroll-arrow.up-arrow:hover:not(:disabled),
+    .scroll-arrow.down-arrow:hover:not(:disabled) {
+        transform: rotate(-90deg) scale(1.05);
     }
 
     /* Connect Section */

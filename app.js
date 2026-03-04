@@ -364,42 +364,78 @@ const scrollAmount = 230;
 function updateScrollArrows() {
     if (!grid.classList.contains('is-morphing')) return;
 
-    // Check if we are at the top
-    if (grid.scrollTop <= 0) {
-        upArrow.disabled = true;
-    } else {
-        upArrow.disabled = false;
-    }
+    const isMobile = window.innerWidth <= 900;
 
-    // Check if we are at the bottom.
-    // Use a small 2px threshold to account for fractional pixel rounding errors in scroll dimensions
-    if (grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 2) {
-        downArrow.disabled = true;
+    if (isMobile) {
+        // Horizontal scroll check
+        if (grid.scrollLeft <= 0) {
+            upArrow.disabled = true;
+        } else {
+            upArrow.disabled = false;
+        }
+
+        if (grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 2) {
+            downArrow.disabled = true;
+        } else {
+            downArrow.disabled = false;
+        }
     } else {
-        downArrow.disabled = false;
+        // Vertical scroll check (Desktop)
+        if (grid.scrollTop <= 0) {
+            upArrow.disabled = true;
+        } else {
+            upArrow.disabled = false;
+        }
+
+        if (grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 2) {
+            downArrow.disabled = true;
+        } else {
+            downArrow.disabled = false;
+        }
     }
 }
 
 if (upArrow && downArrow) {
     upArrow.addEventListener('click', (e) => {
         e.stopPropagation();
-        grid.scrollBy({
-            top: -scrollAmount,
-            behavior: 'smooth'
-        });
+        const isMobile = window.innerWidth <= 900;
+        if (isMobile) {
+            grid.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+        } else {
+            grid.scrollBy({
+                top: -scrollAmount,
+                behavior: 'smooth'
+            });
+        }
     });
 
     downArrow.addEventListener('click', (e) => {
         e.stopPropagation();
-        grid.scrollBy({
-            top: scrollAmount,
-            behavior: 'smooth'
-        });
+        const isMobile = window.innerWidth <= 900;
+        if (isMobile) {
+            grid.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        } else {
+            grid.scrollBy({
+                top: scrollAmount,
+                behavior: 'smooth'
+            });
+        }
     });
 
     // Native scroll event inside the grid updates the arrows dynamically
     grid.addEventListener('scroll', () => {
         // Use requestAnimationFrame to debounce the visual update slightly and avoid jank
+        requestAnimationFrame(updateScrollArrows);
+    });
+
+    // Also update on resize
+    window.addEventListener('resize', () => {
         requestAnimationFrame(updateScrollArrows);
     });
 }
