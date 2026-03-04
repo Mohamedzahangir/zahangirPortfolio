@@ -969,13 +969,18 @@ textarea.form-input {
         justify-content: flex-start;
     }
 
-    .skill-pill.hide-mobile {
+    .skill-pill.hide-mobile,
+    .skill-category.hide-mobile {
         display: none;
     }
 
     /* When expanded, show the hidden skills */
     .skills-container.expanded .skill-pill.hide-mobile {
         display: flex;
+    }
+
+    .skills-container.expanded .skill-category.hide-mobile {
+        display: block;
     }
 
     .show-more-skills-btn {
