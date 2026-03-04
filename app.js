@@ -300,8 +300,13 @@ cards.forEach(card => {
         // If clicking the close button on an active card, ignore here (handled by closeBtn listener)
         if (e.target.closest('.project-close-btn')) return;
 
-        // If clicking the same locked card, do nothing (keep reading)
-        if (isLocked && activeCard === card) return;
+        // If clicking the same locked card, collapse it
+        if (isLocked && activeCard === card) {
+            isLocked = false;
+            grid.classList.remove('is-locked');
+            handleMorph(null, false);
+            return;
+        }
 
         // Otherwise lock and expand this card
         isLocked = true;
@@ -364,7 +369,7 @@ const scrollAmount = 230;
 function updateScrollArrows() {
     if (!grid.classList.contains('is-morphing')) return;
 
-    const isMobile = window.innerWidth <= 900;
+    const isMobile = window.innerWidth <= 1024;
 
     if (isMobile) {
         // Horizontal scroll check

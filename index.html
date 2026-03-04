@@ -680,41 +680,103 @@
                     </div>
                     <!-- Hidden Expanded Content -->
                     <div class="p-card-expanded-content" style="padding: 25px; overflow-y: auto;">
-                        <hr style="border:none; border-bottom: 2px dashed rgba(2,2,2,0.1); margin-bottom: 20px;">
 
-                        <h5 class="font-ans"
-                            style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 15px; font-weight:600;"><i
-                                class="fas fa-tools" style="margin-right: 8px;"></i>Tech Stack</h5>
-                        <div class="skills-container" style="gap: 10px; margin-bottom: 25px;">
-                            <span class="skill-pill neu-flat font-sans"
-                                style="padding: 5px 12px; font-size: 0.75rem;">HTML & CSS</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="padding: 5px 12px; font-size: 0.75rem;">JavaScript</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="padding: 5px 12px; font-size: 0.75rem;">Node.js</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="padding: 5px 12px; font-size: 0.75rem;">Express.js</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="padding: 5px 12px; font-size: 0.75rem;">LinkedIn API</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="padding: 5px 12px; font-size: 0.75rem;">OAuth 2.0</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="padding: 5px 12px; font-size: 0.75rem;">OpenID Connect</span>
+                        <!-- DESKTOP / LAPTOP VIEW -->
+                        <div class="desktop-view hide-on-mobile">
+                            <hr style="border:none; border-bottom: 2px dashed rgba(2,2,2,0.1); margin-bottom: 20px;">
+
+                            <h5 class="font-sans"
+                                style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 15px; font-weight:600;">
+                                <i class="fas fa-tools" style="margin-right: 8px;"></i>Tech Stack</h5>
+                            <div class="skills-container"
+                                style="gap: 10px; margin-bottom: 25px; display: flex; flex-wrap: wrap;">
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">Node.js</span>
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">Express.js</span>
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">LinkedIn API</span>
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">OAuth 2.0</span>
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">OpenID Connect</span>
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">REST APIs</span>
+                            </div>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-book-open" style="margin-right: 8px;"></i>Overview</h5>
+                            <p class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+                                A backend automation agent that programmatically publishes posts to LinkedIn using the
+                                official LinkedIn API. The system manages authentication, secure token exchange, and
+                                automated publishing through a structured backend workflow.
+                            </p>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-cog" style="margin-right: 8px;"></i>Core Implementation</h5>
+                            <ul class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; padding-left: 20px; margin-bottom: 20px;">
+                                <li><strong>OAuth Authentication:</strong> Implemented complete 3-Legged OAuth flow,
+                                    authorization code exchange, and handled scopes (openid, profile, w_member_social).
+                                </li>
+                                <li><strong>User Identity Handling:</strong> Retrieved authenticated member ID using the
+                                    OpenID endpoint.</li>
+                                <li><strong>Automated Publishing:</strong> Built a backend module to create and publish
+                                    posts with structured JSON payloads.</li>
+                                <li><strong>Security:</strong> Stored credentials securely using environment variables
+                                    (.env).</li>
+                            </ul>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-star" style="margin-right: 8px;"></i>Key Highlights</h5>
+                            <ul class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; padding-left: 20px;">
+                                <li>Official LinkedIn API integration</li>
+                                <li>Production-style OAuth implementation</li>
+                                <li>Secure backend publishing workflow</li>
+                                <li>Modular backend architecture</li>
+                            </ul>
                         </div>
 
-                        <h5 class="font-ans"
-                            style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;"><i
-                                class="fas fa-cog" style="margin-right: 8px;"></i>Details</h5>
-                        <ul class="font-sans"
-                            style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; padding-left: 20px; text-transform: none; letter-spacing: normal;">
-                            <li style="margin-bottom: 8px;">Implemented full 3-Legged OAuth flow from scratch.</li>
-                            <li style="margin-bottom: 8px;">Authorization code exchange for access token.</li>
-                            <li style="margin-bottom: 8px;">Scope handling (openid, profile, w_member_social).</li>
-                            <li style="margin-bottom: 8px;">Extracted member ID using OpenID.</li>
-                            <li style="margin-bottom: 8px;">Built secure backend publishing module.</li>
-                            <li style="margin-bottom: 8px;">Automated LinkedIn post publishing via official API.</li>
-                            <li style="margin-bottom: 8px;">Secured credentials using environment variables (.env).</li>
-                        </ul>
+                        <!-- MOBILE VIEW (Elite Compact) -->
+                        <div class="mobile-view hide-on-desktop">
+                            <hr style="border:none; border-bottom: 2px dashed rgba(2,2,2,0.1); margin-bottom: 15px;">
+
+                            <h5 class="font-sans"
+                                style="font-size: 1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-tools" style="margin-right: 6px;"></i>Tech Stack</h5>
+                            <p class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;">
+                                Node.js · Express.js · LinkedIn API · OAuth 2.0 · OpenID Connect
+                            </p>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-info-circle" style="margin-right: 6px;"></i>Details</h5>
+                            <p class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;">
+                                Built a backend automation agent that programmatically publishes posts to LinkedIn using
+                                the official API. Implemented the full 3-Legged OAuth flow, handled authorization code
+                                exchange, retrieved member identity via OpenID, and created a secure module for
+                                automated post publishing.
+                            </p>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-star" style="margin-right: 6px;"></i>Highlights</h5>
+                            <ul class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.85rem; line-height: 1.5; padding-left: 0; list-style-type: none;">
+                                <li>• Official LinkedIn API integration</li>
+                                <li>• Secure OAuth authentication flow</li>
+                                <li>• Automated LinkedIn post publishing</li>
+                                <li>• Environment-based credential security</li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
                 <div class="project-card scroll-animate slide-up delay-100" id="proj2">

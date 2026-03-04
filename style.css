@@ -643,6 +643,26 @@ body.dark-mode .logo-img {
     padding: 20px 10%;
 }
 
+/* Base states for desktop (min-width: 1024px) */
+.hide-on-desktop {
+    display: none !important;
+}
+
+.hide-on-mobile {
+    display: block !important;
+}
+
+/* Specific component breakpoint for 1024px and below */
+@media (max-width: 1023.98px) {
+    .hide-on-desktop {
+        display: block !important;
+    }
+
+    .hide-on-mobile {
+        display: none !important;
+    }
+}
+
 .p-card-title {
     font-size: 1.4rem;
     font-weight: 500;
@@ -997,13 +1017,22 @@ textarea.form-input {
         grid-row: 3;
     }
 
-    /* Projects Section */
+    /* Projects Section (Base mobile overrides) */
     .projects-grid {
         grid-template-columns: 1fr;
         grid-auto-rows: minmax(250px, auto);
         gap: 20px;
     }
 
+    .project-card {
+        height: 250px;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE PROJECTS (MORPH HORIZONTAL LAYOUT <= 1024px)
+   ============================================================ */
+@media (max-width: 1024px) {
     .projects-grid.is-morphing {
         grid-template-columns: repeat(20, minmax(200px, 1fr));
         /* Very wide grid for horizontal sliding */
