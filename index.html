@@ -675,10 +675,10 @@
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
-                    <!-- Visual banner. Use class styling, possibly a tech icon later -->
                     <div class="p-card-img-placeholder neu-inset"
-                        style="display:flex; align-items:center; justify-content:center; font-size: 2.5rem; border-top-left-radius: 12px; border-top-right-radius: 12px; background:#fff;">
-                        <i class="fab fa-linkedin" style="color: #FBF6E2;"></i>
+                        style="border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden; padding: 20px; background-color: #F8F4E8;">
+                        <img src="assets/linkedin_proj.png" alt="LinkedIn Auto Post Agent Banner"
+                            style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                     <div class="p-card-details">
                         <h4 class="p-card-title font-script">LinkedIn Auto Post Agent</h4>
@@ -741,15 +741,31 @@
 
                             <h5 class="font-sans"
                                 style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-tasks" style="margin-right: 8px;"></i>Progress
+                            </h5>
+                            <p class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="display: inline-block; padding: 4px 12px; font-size: 0.8rem; background: #E8F5E9; color: #2E7D32;">Completed</span>
+                            </p>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
                                 <i class="fas fa-star" style="margin-right: 8px;"></i>Key Highlights
                             </h5>
                             <ul class="font-sans"
-                                style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; padding-left: 20px;">
+                                style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; padding-left: 20px; margin-bottom: 25px;">
                                 <li>Official LinkedIn API integration</li>
                                 <li>Production-style OAuth implementation</li>
                                 <li>Secure backend publishing workflow</li>
                                 <li>Modular backend architecture</li>
                             </ul>
+
+                            <a href="https://github.com/Mohamedzahangir/linkedin-ai-agent" target="_blank"
+                                rel="noopener noreferrer" class="btn neu-btn font-sans"
+                                style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; text-decoration: none;">
+                                <i class="fab fa-github" style="font-size: 1.1rem;"></i> GitHub Repository
+                            </a>
                         </div>
 
                         <!-- MOBILE VIEW (Elite Compact) -->
@@ -779,15 +795,31 @@
 
                             <h5 class="font-sans"
                                 style="font-size: 1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-tasks" style="margin-right: 6px;"></i>Progress
+                            </h5>
+                            <p class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;">
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="display: inline-block; padding: 4px 10px; font-size: 0.75rem; background: #E8F5E9; color: #2E7D32;">Completed</span>
+                            </p>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
                                 <i class="fas fa-star" style="margin-right: 6px;"></i>Highlights
                             </h5>
                             <ul class="font-sans"
-                                style="color: var(--text-dark); font-size: 0.85rem; line-height: 1.5; padding-left: 0; list-style-type: none;">
+                                style="color: var(--text-dark); font-size: 0.85rem; line-height: 1.5; padding-left: 0; list-style-type: none; margin-bottom: 20px;">
                                 <li>• Official LinkedIn API integration</li>
                                 <li>• Secure OAuth authentication flow</li>
                                 <li>• Automated LinkedIn post publishing</li>
                                 <li>• Environment-based credential security</li>
                             </ul>
+
+                            <a href="https://github.com/Mohamedzahangir/linkedin-ai-agent" target="_blank"
+                                rel="noopener noreferrer" class="btn neu-btn font-sans"
+                                style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; padding: 8px 16px; text-decoration: none;">
+                                <i class="fab fa-github" style="font-size: 1rem;"></i> GitHub Repo
+                            </a>
                         </div>
 
                     </div>
@@ -796,10 +828,169 @@
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
-                    <div class="p-card-img-placeholder"></div>
+                    <!-- Visual banner -->
+                    <div class="p-card-img-placeholder neu-inset"
+                        style="border-top-left-radius: 12px; border-top-right-radius: 12px; overflow: hidden; padding: 20px; background-color: #F8F4E8;">
+                        <!-- Using signature logo as placeholder thumbnail as requested (light logo) -->
+                        <img src="assets/light logo.png" alt="Developer Portfolio Platform Banner"
+                            style="width: 100%; height: 100%; object-fit: contain; filter: invert(0);">
+                    </div>
                     <div class="p-card-details">
-                        <h4 class="p-card-title font-script">Project 2</h4>
-                        <span class="p-card-tag font-sans">AI Model</span>
+                        <h4 class="p-card-title font-script">Current Portfolio Website</h4>
+                        <span class="p-card-tag font-sans">Developer Portfolio Platform</span>
+                    </div>
+                    <!-- Hidden Expanded Content -->
+                    <div class="p-card-expanded-content" style="padding: 25px; overflow-y: auto;">
+
+                        <!-- DESKTOP / LAPTOP VIEW -->
+                        <div class="desktop-view hide-on-mobile">
+                            <hr style="border:none; border-bottom: 2px dashed rgba(2,2,2,0.1); margin-bottom: 20px;">
+
+                            <h5 class="font-sans"
+                                style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 15px; font-weight:600;">
+                                <i class="fas fa-tools" style="margin-right: 8px;"></i>Tech Stack
+                            </h5>
+                            <div class="skills-container"
+                                style="gap: 10px; margin-bottom: 25px; display: flex; flex-wrap: wrap;">
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">HTML</span>
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">CSS</span>
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">JavaScript</span>
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">Responsive Design</span>
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="padding: 5px 12px; font-size: 0.75rem;">Vercel Deployment</span>
+                            </div>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-book-open" style="margin-right: 8px;"></i>Overview
+                            </h5>
+                            <p class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+                                A fully custom developer portfolio platform built to showcase projects, technical work,
+                                and development experience through an interactive and visually polished interface. The
+                                platform focuses on smooth interactions, responsive layout behavior, and modular project
+                                presentation.
+                            </p>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-cog" style="margin-right: 8px;"></i>Core Implementation
+                            </h5>
+                            <ul class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; padding-left: 20px; margin-bottom: 20px;">
+                                <li><strong>Interface Architecture:</strong> Structured section-based layout for hero,
+                                    about, skills, and projects. Modular project card system with expandable details.
+                                    Consistent UI styling.</li>
+                                <li><strong>Interaction Design:</strong> Smooth scroll-triggered animations. Interactive
+                                    hover and expand behaviors. Responsive UI adjustments across devices.</li>
+                                <li><strong>Project Showcase System:</strong> Expandable project cards. Structured
+                                    project information display. Clean visual hierarchy for readability.</li>
+                                <li><strong>Deployment:</strong> Hosted and deployed using Vercel. Optimized for
+                                    performance and responsiveness.</li>
+                            </ul>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-tasks" style="margin-right: 8px;"></i>Progress
+                            </h5>
+                            <p class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="display: inline-block; padding: 4px 12px; font-size: 0.8rem; background: #FFF3E0; color: #E65100;">Coding
+                                    Phase</span>
+                            </p>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-star" style="margin-right: 8px;"></i>Key Highlights
+                            </h5>
+                            <ul class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; padding-left: 20px; margin-bottom: 25px;">
+                                <li>Fully custom portfolio interface</li>
+                                <li>Interactive project presentation system</li>
+                                <li>Responsive design for all devices</li>
+                                <li>Smooth animation-driven UI experience</li>
+                            </ul>
+
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <a href="https://zahangir-portfolio-snowy.vercel.app/" target="_blank"
+                                    rel="noopener noreferrer" class="btn neu-btn font-sans"
+                                    style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; text-decoration: none;">
+                                    <i class="fas fa-external-link-alt" style="font-size: 1.1rem;"></i> Live Demo
+                                </a>
+                                <a href="https://github.com/Mohamedzahangir/zahangirPortfolio" target="_blank"
+                                    rel="noopener noreferrer" class="btn neu-btn font-sans"
+                                    style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; text-decoration: none;">
+                                    <i class="fab fa-github" style="font-size: 1.1rem;"></i> GitHub Repo
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- MOBILE VIEW (Elite Compact) -->
+                        <div class="mobile-view hide-on-desktop">
+                            <hr style="border:none; border-bottom: 2px dashed rgba(2,2,2,0.1); margin-bottom: 15px;">
+
+                            <h5 class="font-sans"
+                                style="font-size: 1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-tools" style="margin-right: 6px;"></i>Tech Stack
+                            </h5>
+                            <p class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;">
+                                HTML · CSS · JavaScript · Responsive Design · Vercel
+                            </p>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-info-circle" style="margin-right: 6px;"></i>Details
+                            </h5>
+                            <p class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;">
+                                A custom-built developer portfolio platform designed to present projects and technical
+                                work through a clean interactive interface with responsive layout and smooth UI
+                                animations.
+                            </p>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-tasks" style="margin-right: 6px;"></i>Progress
+                            </h5>
+                            <p class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;">
+                                <span class="skill-pill neu-flat font-sans"
+                                    style="display: inline-block; padding: 4px 10px; font-size: 0.75rem; background: #FFF3E0; color: #E65100;">Coding
+                                    Phase</span>
+                            </p>
+
+                            <h5 class="font-sans"
+                                style="font-size: 1rem; color: var(--text-dark); margin-bottom: 10px; font-weight:600;">
+                                <i class="fas fa-star" style="margin-right: 6px;"></i>Highlights
+                            </h5>
+                            <ul class="font-sans"
+                                style="color: var(--text-dark); font-size: 0.85rem; line-height: 1.5; padding-left: 0; list-style-type: none; margin-bottom: 20px;">
+                                <li>• Interactive expandable project cards</li>
+                                <li>• Responsive layout across devices</li>
+                                <li>• Smooth scroll-based animations</li>
+                                <li>• Deployed using Vercel</li>
+                            </ul>
+
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <a href="https://zahangir-portfolio-snowy.vercel.app/" target="_blank"
+                                    rel="noopener noreferrer" class="btn neu-btn font-sans"
+                                    style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; padding: 8px 16px; text-decoration: none;">
+                                    <i class="fas fa-external-link-alt" style="font-size: 1rem;"></i> Live Demo
+                                </a>
+                                <a href="https://github.com/Mohamedzahangir/zahangirPortfolio" target="_blank"
+                                    rel="noopener noreferrer" class="btn neu-btn font-sans"
+                                    style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; padding: 8px 16px; text-decoration: none;">
+                                    <i class="fab fa-github" style="font-size: 1rem;"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="project-card scroll-animate slide-up delay-200" id="proj3">
@@ -812,52 +1003,14 @@
                         <span class="p-card-tag font-sans">Web App</span>
                     </div>
                 </div>
-                <div class="project-card scroll-animate slide-up delay-300" id="proj4">
+                <div class="project-card scroll-animate slide-up delay-400" id="proj4">
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
-                    <!-- Visual banner -->
-                    <div class="p-card-img-placeholder neu-inset"
-                        style="display:flex; align-items:center; justify-content:center; font-size: 2.5rem; border-radius: 0; background:#f0f2f5;">
-                        <i class="fab fa-linkedin" style="color: #FBF6E2;"></i>
-                    </div>
+                    <div class="p-card-img-placeholder"></div>
                     <div class="p-card-details">
-                        <h4 class="p-card-title font-script" style="font-size: 1.1rem; margin-bottom: 3px;">LinkedIn
-                            Auto Post Agent</h4>
-                        <span class="p-card-tag font-sans" style="font-size: 0.8rem;">API Dev</span>
-                    </div>
-                    <!-- Hidden Expanded Content -->
-                    <div class="p-card-expanded-content">
-                        <!-- Tech Stack Section -->
-                        <h5 class="font-sans expanded-heading"><i class="fas fa-tools"></i> <span>Tech Stack</span></h5>
-                        <div class="skills-container" style="gap: 8px; margin-bottom: 25px; display:flex;">
-                            <span class="skill-pill neu-flat font-sans"
-                                style="font-size: 0.70rem; padding: 4px 10px;">HTML & CSS</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="font-size: 0.70rem; padding: 4px 10px;">JavaScript</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="font-size: 0.70rem; padding: 4px 10px;">Node.js</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="font-size: 0.70rem; padding: 4px 10px;">Express.js</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="font-size: 0.70rem; padding: 4px 10px;">LinkedIn API</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="font-size: 0.70rem; padding: 4px 10px;">OAuth 2.0</span>
-                            <span class="skill-pill neu-flat font-sans"
-                                style="font-size: 0.70rem; padding: 4px 10px;">OpenID</span>
-                        </div>
-
-                        <!-- Details Section -->
-                        <h5 class="font-sans expanded-heading"><i class="fas fa-cogs"></i> <span>Details</span></h5>
-                        <ul class="font-sans expanded-details-list">
-                            <li>Implemented full 3-Legged OAuth flow from scratch.</li>
-                            <li>Authorization code exchange for access token.</li>
-                            <li>Scope handling (openid, profile, w_member_social).</li>
-                            <li>Extracted member ID using OpenID.</li>
-                            <li>Built secure backend publishing module.</li>
-                            <li>Automated LinkedIn post publishing via official API.</li>
-                            <li>Secured credentials using environment variables (.env).</li>
-                        </ul>
+                        <h4 class="p-card-title font-script">Project 5</h4>
+                        <span class="p-card-tag font-sans">Full Stack</span>
                     </div>
                 </div>
                 <div class="project-card scroll-animate slide-up delay-400" id="proj5">

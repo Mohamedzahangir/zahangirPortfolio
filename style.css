@@ -577,6 +577,10 @@ body.dark-mode .logo-img {
     top: 0;
     /* Constrain height to exactly the viewport height minus padding/gaps if needed, or simply container height */
     height: 660px;
+
+    /* Make the active card stand out with border and deeper shadow */
+    border: 1px solid var(--shadow-light);
+    box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
 }
 
 .p-card-img-placeholder {
@@ -589,6 +593,12 @@ body.dark-mode .logo-img {
     z-index: 2;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     /* soft divider below image section */
+    transition: min-height 0.5s ease;
+}
+
+.project-card.is-expanded .p-card-img-placeholder {
+    min-height: 180px;
+    /* Increased banner size for expanded card */
 }
 
 .p-card-details {
@@ -612,6 +622,26 @@ body.dark-mode .logo-img {
 .project-card.is-expanded .p-card-expanded-content {
     display: block;
     opacity: 1;
+}
+
+/* Custom Scrollbar for Extended Content */
+.p-card-expanded-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.p-card-expanded-content::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.p-card-expanded-content::-webkit-scrollbar-thumb {
+    background: var(--shadow-dark);
+    border-radius: 10px;
+    border: 2px solid var(--bg);
+}
+
+.p-card-expanded-content::-webkit-scrollbar-thumb:hover {
+    background: var(--text-mid);
 }
 
 /* Expanded List Detail Items styling inside project structure */
