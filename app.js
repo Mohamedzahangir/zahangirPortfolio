@@ -303,7 +303,6 @@ cards.forEach(card => {
 
     // Mobile/Desktop Click Toggle logic (Lock)
     card.addEventListener('click', (e) => {
-        e.preventDefault();
         // If clicking the close button on an active card, ignore here (handled by closeBtn listener)
         if (e.target.closest('.project-close-btn')) return;
 
@@ -360,14 +359,17 @@ function handleMorph(targetCard, isActivating) {
     }
 
     // 3. Flip Play
+    grid.style.minHeight = grid.offsetHeight + 'px'; // Lock height to prevent collapse
+
     Flip.from(originalState, {
         duration: 0.7,
         ease: 'cubic-bezier(0.4, 0, 0.2, 1)',
         nested: true,
         zIndex: 10,
         scale: true,
-        absolute: true,
+        // absolute: true removed to prevent height collapse
         onComplete: () => {
+            grid.style.minHeight = ''; // Release height
             if (isActivating) updateScrollArrows();
         }
     });
