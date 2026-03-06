@@ -303,29 +303,25 @@ cards.forEach(card => {
 
     // Mobile/Desktop Click Toggle logic (Lock)
     card.addEventListener('click', (e) => {
+        e.preventDefault();
         // If clicking the close button on an active card, ignore here (handled by closeBtn listener)
         if (e.target.closest('.project-close-btn')) return;
 
         // If clicking the same locked card, collapse it
         if (isLocked && activeCard === card) {
-            isLocked = false;
-            grid.classList.remove('is-locked');
             handleMorph(null, false);
             return;
         }
 
         // Otherwise lock and expand this card
-        isLocked = true;
-        grid.classList.add('is-locked');
         handleMorph(card, true);
     });
 
     // Close button logic
     if (closeBtn) {
         closeBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Don't let the card see this click
-            isLocked = false;
-            grid.classList.remove('is-locked');
+            e.preventDefault();
+            e.stopPropagation();
             handleMorph(null, false);
         });
     }
@@ -337,17 +333,29 @@ function handleMorph(targetCard, isActivating) {
     // 1. Get the initial state (position/size) of all cards
     const originalState = Flip.getState(cards);
 
+    // Capture the exact container width to prevent width-popping on mobile
+    if (window.innerWidth <= 1024) {
+        const gridWidth = grid.offsetWidth;
+        grid.style.setProperty('--grid-width', `${gridWidth}px`);
+    }
+
     // 2. Change the DOM
     cards.forEach(c => c.classList.remove('is-expanded'));
 
     if (isActivating && targetCard) {
         grid.classList.add('is-morphing');
+        grid.classList.add('is-locked');
+        isLocked = true;
         targetCard.classList.add('is-expanded');
         activeCard = targetCard;
         // Optionally scroll to top of the grid when expanding to ensure the sticky item is visible
-        grid.scrollTop = 0;
+        if (window.innerWidth > 1024) {
+            grid.scrollTop = 0;
+        }
     } else {
         grid.classList.remove('is-morphing');
+        grid.classList.remove('is-locked');
+        isLocked = false;
         activeCard = null;
     }
 
@@ -358,6 +366,7 @@ function handleMorph(targetCard, isActivating) {
         nested: true,
         zIndex: 10,
         scale: true,
+        absolute: true,
         onComplete: () => {
             if (isActivating) updateScrollArrows();
         }

@@ -1104,8 +1104,9 @@ textarea.form-input {
         grid-row: 1;
         position: sticky;
         left: 0;
-        width: calc(100vw - 80px);
-        /* 100vw minus padding */
+        top: 0;
+        width: var(--grid-width, calc(100vw - 80px));
+        /* 100vw minus padding fallback */
         height: auto;
         min-height: 350px;
         z-index: 10;
