@@ -197,7 +197,57 @@ body.dark-mode .logo-img {
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    /* Hide the icons as they rotate out of view */
+    position: relative;
+}
+
+.toggle-wheel {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sun-icon,
+.moon-icon {
+    position: absolute;
     font-size: 1.2rem;
+    transition: opacity 0.3s;
+}
+
+/* Position icons on opposite sides of a virtual wheel */
+.sun-icon {
+    transform: translateY(0);
+}
+
+.moon-icon {
+    transform: translateY(40px);
+    /* Positioned "below" the horizon */
+    opacity: 0;
+}
+
+/* Dark mode state */
+body.dark-mode .toggle-wheel {
+    transform: rotate(180deg);
+}
+
+body.dark-mode .sun-icon {
+    transform: translateY(-40px) rotate(-180deg);
+    opacity: 0;
+}
+
+body.dark-mode .moon-icon {
+    transform: translateY(0) rotate(-180deg);
+    opacity: 1;
+}
+
+/* Animation for clicking */
+.theme-toggle:active .toggle-wheel {
+    transform: scale(0.9) rotate(var(--rotation, 0deg));
 }
 
 /* ===== HOME SECTION ===== */
