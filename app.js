@@ -231,13 +231,47 @@ let mouseX = 0;
 let mouseY = 0;
 let isParallaxTicking = false;
 
+// --- PUPIL IDLE RESET TIMER ---
+let pupilIdleTimer = null;
+function resetPupilsToCenter() {
+    document.querySelectorAll('.pupil').forEach(pupil => {
+        pupil.style.transform = 'translate(0px, 0px)';
+    });
+}
+
 document.addEventListener('mousemove', (e) => {
     // Calculate mouse position relative to center of screen (-1 to 1)
     mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
     mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
 
+    // Reset idle timer on every mouse move
+    clearTimeout(pupilIdleTimer);
+    pupilIdleTimer = setTimeout(resetPupilsToCenter, 2000); // Reset after 2s idle
+
     if (!isParallaxTicking) {
         requestAnimationFrame(() => {
+            // --- Pupil Tracking ---
+            const pupils = document.querySelectorAll('.pupil');
+            pupils.forEach(pupil => {
+                const rect = pupil.getBoundingClientRect();
+                const pupilX = rect.left + rect.width / 2;
+                const pupilY = rect.top + rect.height / 2;
+
+                // Get angle and distance from mouse
+                const angle = Math.atan2(e.clientY - pupilY, e.clientX - pupilX);
+                const rawDistance = Math.hypot(e.clientX - pupilX, e.clientY - pupilY);
+                const distance = Math.min(8, rawDistance / 12);
+
+                let moveX = Math.cos(angle) * distance;
+                let moveY = Math.sin(angle) * distance;
+
+                // Dampen vertical movement — allow subtle up/down but prevent extreme rolling
+                moveY = Math.max(-2, Math.min(2, moveY));
+
+                pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+
+            // --- 3D Parallax Decos ---
             const decos = document.querySelectorAll('.deco');
             if (decos.length) {
                 decos.forEach(deco => {
@@ -265,6 +299,44 @@ document.addEventListener('mousemove', (e) => {
         isParallaxTicking = true;
     }
 });
+
+// --- MOBILE GYROSCOPE PUPIL TRACKING ---
+let gyroIdleTimer = null;
+
+function movePupilsWithGyro(gamma, beta) {
+    const maxMove = 8;
+    // gamma: left/right tilt (-90 to 90). Map to horizontal pupil movement.
+    let moveX = Math.max(-maxMove, Math.min(maxMove, gamma / 10));
+    // beta: forward/back tilt. Dampen to ±2px, same as mouse version.
+    let moveY = Math.max(-2, Math.min(2, (beta - 45) / 20));
+
+    document.querySelectorAll('.pupil').forEach(pupil => {
+        pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+
+    clearTimeout(gyroIdleTimer);
+    gyroIdleTimer = setTimeout(resetPupilsToCenter, 2000);
+}
+
+if (window.DeviceOrientationEvent) {
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS 13+ requires explicit permission — ask on first touch
+        document.addEventListener('touchstart', function askGyroPermission() {
+            DeviceOrientationEvent.requestPermission().then(state => {
+                if (state === 'granted') {
+                    window.addEventListener('deviceorientation', (e) => {
+                        movePupilsWithGyro(e.gamma || 0, e.beta || 45);
+                    });
+                }
+            }).catch(console.error);
+        }, { once: true });
+    } else {
+        // Android and other browsers — no permission needed
+        window.addEventListener('deviceorientation', (e) => {
+            movePupilsWithGyro(e.gamma || 0, e.beta || 45);
+        });
+    }
+}
 
 // --- SCROLL REVEAL ANIMATIONS ---
 const revealElements = document.querySelectorAll('.scroll-animate');

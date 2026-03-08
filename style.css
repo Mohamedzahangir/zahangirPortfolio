@@ -252,7 +252,7 @@ body.dark-mode .moon-icon {
 
 /* ===== HOME SECTION ===== */
 #home {
-    padding-top: 140px;
+    padding-top: 60px;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -272,12 +272,60 @@ body.dark-mode .moon-icon {
 }
 
 .home-portrait {
-    max-width: 320px;
+    max-width: 420px;
     margin: 0 auto;
     position: relative;
+    /* Container for image and pupils */
     z-index: 2;
     animation: floatPortrait 6s ease-in-out infinite;
     transform-origin: center;
+}
+
+.home-portrait img {
+    position: relative;
+    z-index: 2;
+    /* Sits above the pupils */
+}
+
+.eye-pupils {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    /* Sits behind the face image */
+}
+
+.pupil-wrapper {
+    position: absolute;
+    width: 70px;
+    /* Increased to accommodate larger pupil */
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+}
+
+.left-eye {
+    left: 67.6%;
+    top: 40.9%;
+}
+
+.right-eye {
+    left: 47.7%;
+    top: 38.6%;
+}
+
+.pupil {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    transition: transform 0.35s ease-out;
+    /* Slowed from 0.05s for smoother movement */
+    filter: blur(0.8px);
 }
 
 @keyframes floatPortrait {
@@ -893,6 +941,12 @@ textarea.form-input {
         font-size: 1rem;
     }
 
+    .pupil {
+        width: 35px;
+        /* Scaled for mobile */
+        height: 35px;
+    }
+
     .nav-links {
         display: flex;
         flex-direction: column;
@@ -946,8 +1000,10 @@ textarea.form-input {
         min-height: 100dvh;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        justify-content: flex-start;
+        /* Changed from center to bring content up */
+        padding-top: 20px;
+        /* Ultra-minimal top padding */
         position: relative;
         overflow: hidden;
     }
@@ -955,7 +1011,8 @@ textarea.form-input {
     .home-content {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 10px;
+        gap: 5px;
+        /* Reduced gap to save vertical space */
         margin: 0;
         width: 100%;
     }
@@ -963,6 +1020,7 @@ textarea.form-input {
     .home-portrait {
         order: -1;
         max-width: 180px;
+        /* Scaled down further for visibility */
         margin-left: auto;
         margin-right: auto;
         margin-top: 10px;
