@@ -1018,8 +1018,8 @@ textarea.form-input {
 
     .home-portrait {
         order: -1;
-        max-width: 280px;
-        /* Scaled down further for visibility */
+        max-width: 330px;
+        /* Slightly larger for better visual presence */
         margin-left: auto;
         margin-right: auto;
         margin-top: 30px;
