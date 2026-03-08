@@ -1002,7 +1002,7 @@ textarea.form-input {
         flex-direction: column;
         justify-content: flex-start;
         /* Changed from center to bring content up */
-        padding-top: 50px;
+        padding-top: 20px;
         /* Ultra-minimal top padding */
 
     }
