@@ -338,6 +338,33 @@ if (window.DeviceOrientationEvent) {
     }
 }
 
+// --- MOBILE TOUCH PUPIL TRACKING ---
+document.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    clearTimeout(pupilIdleTimer);
+    pupilIdleTimer = setTimeout(resetPupilsToCenter, 2000);
+
+    document.querySelectorAll('.pupil').forEach(pupil => {
+        const rect = pupil.getBoundingClientRect();
+        const pupilX = rect.left + rect.width / 2;
+        const pupilY = rect.top + rect.height / 2;
+
+        const angle = Math.atan2(touch.clientY - pupilY, touch.clientX - pupilX);
+        const rawDistance = Math.hypot(touch.clientX - pupilX, touch.clientY - pupilY);
+        const distance = Math.min(8, rawDistance / 12);
+
+        let moveX = Math.cos(angle) * distance;
+        let moveY = Math.sin(angle) * distance;
+
+        // Same vertical dampening as mouse/gyro
+        moveY = Math.max(-2, Math.min(2, moveY));
+
+        pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+}, { passive: true });
+
 // --- SCROLL REVEAL ANIMATIONS ---
 const revealElements = document.querySelectorAll('.scroll-animate');
 
