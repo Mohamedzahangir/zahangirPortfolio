@@ -1092,12 +1092,14 @@ textarea.form-input {
 
     .about-grid {
         display: grid;
-        grid-template-columns: 1fr 120px;
-        gap: 30px 10px;
+        grid-template-columns: 1fr 130px;
+        grid-template-rows: auto auto auto auto auto;
+        gap: 20px 15px;
     }
 
     .about-col-1 {
         display: contents;
+        /* Allows children to participate directly in about-grid */
     }
 
     .section-title.about-title {
@@ -1105,38 +1107,48 @@ textarea.form-input {
         margin-bottom: 20px;
     }
 
+    /* Intro title: spans both columns, above portrait */
     .subsection-title.intro-title {
-        grid-column: 1 / 3;
+        grid-column: 1 / 2;
         grid-row: 1;
         margin-bottom: 5px;
+        align-self: end;
     }
 
+    /* Intro text: beside the portrait */
     .about-text {
         grid-column: 1 / 2;
         grid-row: 2;
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 2;
-        padding-right: 15px;
+        margin-bottom: 0;
+        font-size: 0.82rem;
+        line-height: 1.55;
+        padding-right: 8px;
     }
 
+    /* Portrait: top-right, spans intro title + text rows */
     .about-portrait {
         grid-column: 2 / 3;
-        grid-row: 2;
+        grid-row: 1 / 3;
         width: 100%;
-        margin-top: 10px;
-        opacity: 0.9;
+        align-self: start;
+        margin-top: 5px;
+        opacity: 0.92;
         z-index: 1;
         position: relative;
-        right: auto;
-        top: auto;
         display: block;
     }
 
+    /* Education: full width below intro block */
+    .education-column {
+        grid-column: 1 / 3;
+        grid-row: 3;
+    }
+
+    /* Skills section: full width at the bottom */
     .subsection-title.skills-title {
         grid-column: 1 / 3;
         grid-row: 4;
-        margin-top: 40px;
+        margin-top: 20px;
     }
 
     .skills-container {
