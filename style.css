@@ -309,6 +309,24 @@ body.dark-mode .moon-icon {
     transform: translate(-50%, -50%);
 }
 
+/* Dark mode: fill the transparent eye socket with a light oval
+   so the dark background doesn't bleed through */
+body.dark-mode .pupil-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 58px;
+    height: 46px;
+    background: #F1F1E6;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+body.dark-mode .pupil {
+    position: relative;
+    z-index: 1;
+    /* Sits above the filler oval */
+}
+
 .left-eye {
     left: 67.6%;
     top: 40.9%;
@@ -1457,6 +1475,51 @@ textarea.form-input {
 }
 
 /* Stops the pulse when transitioning to navbar */
+/* Stops the pulse when transitioning to navbar */
 .loader-logo.transitioning {
     animation: none;
+}
+
+/* ===== MOBILE GYRO HINT POPUP ===== */
+.gyro-hint {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .gyro-hint {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+
+        /* Neumorphic — matches the site's card style */
+        background: var(--bg);
+        box-shadow: 6px 6px 14px var(--shadow-dark),
+            -6px -6px 14px var(--shadow-light);
+        border-radius: 20px;
+        padding: 14px 24px;
+
+        /* Typography — Caveat script font like nav links */
+        font-family: 'Caveat', cursive;
+        font-size: 1.25rem;
+        color: var(--text-mid);
+
+        white-space: nowrap;
+        z-index: 9999;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    .gyro-hint.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .gyro-hint-icon {
+        font-size: 1.3rem;
+    }
 }

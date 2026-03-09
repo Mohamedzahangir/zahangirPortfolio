@@ -64,6 +64,18 @@ window.addEventListener('load', () => {
             document.body.classList.remove('no-scroll');
             document.body.classList.remove('wait-for-loader');
 
+            // Show mobile gyro hint on touch devices
+            if ('ontouchstart' in window) {
+                const gyroHint = document.getElementById('gyroHint');
+                if (gyroHint) {
+                    setTimeout(() => {
+                        gyroHint.classList.add('show');
+                        // Auto-dismiss after 3 seconds
+                        setTimeout(() => gyroHint.classList.remove('show'), 3000);
+                    }, 400); // Short delay after loader hides
+                }
+            }
+
         }, 1200); // Wait 1.2s for the transform to finish
 
     }, 3200); // Wait 3.2s for Phase 1 (3s drawing + 0.2s pause)
@@ -339,8 +351,6 @@ if (window.DeviceOrientationEvent) {
 }
 
 // --- MOBILE TOUCH PUPIL TRACKING ---
-let isTouchTicking = false;
-
 document.addEventListener('touchmove', (e) => {
     const touch = e.touches[0];
     if (!touch) return;
@@ -348,29 +358,23 @@ document.addEventListener('touchmove', (e) => {
     clearTimeout(pupilIdleTimer);
     pupilIdleTimer = setTimeout(resetPupilsToCenter, 2000);
 
-    if (!isTouchTicking) {
-        requestAnimationFrame(() => {
-            document.querySelectorAll('.pupil').forEach(pupil => {
-                const rect = pupil.getBoundingClientRect();
-                const pupilX = rect.left + rect.width / 2;
-                const pupilY = rect.top + rect.height / 2;
+    document.querySelectorAll('.pupil').forEach(pupil => {
+        const rect = pupil.getBoundingClientRect();
+        const pupilX = rect.left + rect.width / 2;
+        const pupilY = rect.top + rect.height / 2;
 
-                const angle = Math.atan2(touch.clientY - pupilY, touch.clientX - pupilX);
-                const rawDistance = Math.hypot(touch.clientX - pupilX, touch.clientY - pupilY);
-                const distance = Math.min(8, rawDistance / 12);
+        const angle = Math.atan2(touch.clientY - pupilY, touch.clientX - pupilX);
+        const rawDistance = Math.hypot(touch.clientX - pupilX, touch.clientY - pupilY);
+        const distance = Math.min(8, rawDistance / 12);
 
-                let moveX = Math.cos(angle) * distance;
-                let moveY = Math.sin(angle) * distance;
+        let moveX = Math.cos(angle) * distance;
+        let moveY = Math.sin(angle) * distance;
 
-                // Same vertical dampening as mouse/gyro
-                moveY = Math.max(-2, Math.min(2, moveY));
+        // Same vertical dampening as mouse/gyro
+        moveY = Math.max(-2, Math.min(2, moveY));
 
-                pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
-            isTouchTicking = false;
-        });
-        isTouchTicking = true;
-    }
+        pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
 }, { passive: true });
 
 // --- SCROLL REVEAL ANIMATIONS ---
