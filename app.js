@@ -283,29 +283,7 @@ document.addEventListener('mousemove', (e) => {
                 pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
             });
 
-            // --- 3D Parallax Decos ---
-            const decos = document.querySelectorAll('.deco');
-            if (decos.length) {
-                decos.forEach(deco => {
-                    // Use individual data-speed for varied depth, fallback to 25
-                    const speed = parseFloat(deco.getAttribute('data-speed')) || 25;
-
-                    // Translate and rotate the element for a distinct 3D feel
-                    const moveX = mouseX * speed;
-                    const moveY = mouseY * speed;
-
-                    // Intensified rotation for stronger 3D effect
-                    const rotateX = -mouseY * (speed * 0.8); // Tilt up/down
-                    const rotateY = mouseX * (speed * 0.8);  // Tilt left/right
-
-                    // Add a pulsing Z-translation based on mouse distance to center
-                    const distance = Math.sqrt(mouseX * mouseX + mouseY * mouseY);
-                    const translateZ = distance * (speed * 1.5);
-
-                    // Update transform without transition for instantaneous rendering via mousemove
-                    deco.style.transform = `perspective(1000px) translate3d(${moveX}px, ${moveY}px, ${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                });
-            }
+            // --- 3D Parallax Decos Disabled ---
             isParallaxTicking = false;
         });
         isParallaxTicking = true;
@@ -585,4 +563,182 @@ function toggleMobileSkills() {
         skillsContainer.classList.add('expanded');
         btn.innerHTML = 'Show Less <i class="fas fa-chevron-up"></i>';
     }
+}
+
+// --- THREE.JS 3D ELEMENTS ---
+function initThreeJS() {
+    const cubeContainer = document.getElementById('three-cube-container');
+    const polyContainer = document.getElementById('three-poly-container');
+
+    if (!cubeContainer || !polyContainer) return;
+
+    // Common setup function
+    function createScene(container, type) {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+        camera.position.z = 2;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 0.8);
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
+
+        let geometry, material, mesh, edges, line;
+
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const color = isDarkMode ? 0xffffff : 0x333333;
+
+        if (type === 'cube') {
+            geometry = new THREE.BoxGeometry(1, 1, 1);
+            material = new THREE.MeshBasicMaterial({ visible: false }); // Hide faces completely
+            mesh = new THREE.Mesh(geometry, material);
+
+            // Clean wireframe edges
+            edges = new THREE.EdgesGeometry(geometry);
+            line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: color, transparent: true, opacity: 0.9 }));
+            mesh.add(line);
+        } else {
+            geometry = new THREE.IcosahedronGeometry(0.8, 0); // Flat poly
+            material = new THREE.MeshBasicMaterial({ visible: false }); // Hide faces completely
+            mesh = new THREE.Mesh(geometry, material);
+
+            edges = new THREE.EdgesGeometry(geometry);
+            line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: color, opacity: 0.4, transparent: true }));
+            mesh.add(line);
+        }
+
+        scene.add(mesh);
+
+        return { scene, camera, renderer, mesh };
+    }
+
+    const cubeObj = createScene(cubeContainer, 'cube');
+    const polyObj = createScene(polyContainer, 'poly');
+
+    // Persistent Rotation Velocities
+    let cubeVel = { x: 0.003, y: 0.004 };
+    let polyVel = { x: -0.002, y: -0.003 };
+
+    function setupInteraction(container, velRef) {
+        let isDragging = false;
+        let lastPos = { x: 0, y: 0 };
+        container.style.cursor = 'grab';
+        container.style.pointerEvents = 'auto';
+
+        const onPointerDown = (e) => {
+            isDragging = true;
+            container.style.cursor = 'grabbing';
+            lastPos = { x: e.clientX || e.touches?.[0].clientX, y: e.clientY || e.touches?.[0].clientY };
+        };
+
+        const onPointerMove = (e) => {
+            if (!isDragging) return;
+            
+            // Prevent scrolling on mobile while interacting
+            if (e.touches) e.preventDefault();
+
+            const currentX = e.clientX || e.touches?.[0].clientX;
+            const currentY = e.clientY || e.touches?.[0].clientY;
+            
+            // Calculate velocity
+            const dx = (currentX - lastPos.x) * 0.01;
+            const dy = (currentY - lastPos.y) * 0.01;
+
+            // Update persistent velocity
+            velRef.y = dx;
+            velRef.x = dy;
+
+            lastPos = { x: currentX, y: currentY };
+        };
+
+        const onPointerUp = () => {
+            isDragging = false;
+            container.style.cursor = 'grab';
+        };
+
+        container.addEventListener('mousedown', onPointerDown);
+        window.addEventListener('mousemove', onPointerMove);
+        window.addEventListener('mouseup', onPointerUp);
+
+        container.addEventListener('touchstart', onPointerDown);
+        window.addEventListener('touchmove', onPointerMove, { passive: false });
+        window.addEventListener('touchend', onPointerUp);
+    }
+
+    setupInteraction(cubeContainer, cubeVel);
+    setupInteraction(polyContainer, polyVel);
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        const time = Date.now() * 0.001;
+
+        if (cubeObj) {
+            cubeObj.mesh.rotation.y += cubeVel.y;
+            cubeObj.mesh.rotation.x += cubeVel.x;
+            cubeObj.mesh.position.y = Math.sin(time * 0.5) * 0.1;
+            cubeObj.renderer.render(cubeObj.scene, cubeObj.camera);
+        }
+
+        if (polyObj) {
+            polyObj.mesh.rotation.y += polyVel.y;
+            polyObj.mesh.rotation.x += polyVel.x;
+            polyObj.mesh.position.y = Math.cos(time * 0.5) * 0.1;
+            polyObj.renderer.render(polyObj.scene, polyObj.camera);
+        }
+    }
+
+    animate();
+
+    // Re-check theme on toggle
+    const themeObserver = new MutationObserver(() => {
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        const color = isDarkMode ? 0xffffff : 0x333333;
+        if (cubeObj) {
+            cubeObj.mesh.material.color.setHex(color);
+            cubeObj.mesh.children[0].material.color.setHex(color);
+        }
+        if (polyObj) {
+            polyObj.mesh.material.color.setHex(color);
+            polyObj.mesh.children[0].material.color.setHex(color);
+        }
+    });
+    themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    // Handle Resize
+    window.addEventListener('resize', () => {
+        if (cubeObj) {
+            cubeObj.camera.aspect = cubeContainer.clientWidth / cubeContainer.clientHeight;
+            cubeObj.camera.updateProjectionMatrix();
+            cubeObj.renderer.setSize(cubeContainer.clientWidth, cubeContainer.clientHeight);
+        }
+        if (polyObj) {
+            polyObj.camera.aspect = polyContainer.clientWidth / polyContainer.clientHeight;
+            polyObj.camera.updateProjectionMatrix();
+            polyObj.renderer.setSize(polyContainer.clientWidth, polyContainer.clientHeight);
+        }
+    });
+
+    // Make objects available for parallax script
+    window.threeCube = cubeObj?.mesh;
+    window.threePoly = polyObj?.mesh;
+}
+
+// Initialize when ready
+if (typeof THREE !== 'undefined') {
+    initThreeJS();
+} else {
+    window.addEventListener('load', () => {
+        if (typeof THREE !== 'undefined') initThreeJS();
+    });
 }

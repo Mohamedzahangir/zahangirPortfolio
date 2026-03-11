@@ -4,7 +4,7 @@
 
 /* ===== CSS VARIABLES (Neumorphic System) ===== */
 :root {
-    --bg: #F1F1E6;
+    --bg: #F2F3E3;
     --text-dark: #1A1A1A;
     --text-mid: #4a4a4a;
     --text-light: #777777;
@@ -268,7 +268,32 @@ body.dark-mode .moon-icon {
 
 .home-illustration {
     position: relative;
-    /* Cube SVG will be absolute positioned inside this */
+    /* Cube SCG will be absolute positioned inside this */
+}
+
+/* 3D Decoration Classes */
+.cube-deco {
+    position: absolute;
+    top: -40px;
+    left: -140px;
+    z-index: 1;
+}
+
+#three-cube-container {
+    width: 320px;
+    height: 320px;
+}
+
+.poly-deco {
+    position: absolute;
+    bottom: -20px;
+    right: -120px;
+    z-index: 1;
+}
+
+#three-poly-container {
+    width: 280px;
+    height: 280px;
 }
 
 .home-portrait {
@@ -279,6 +304,7 @@ body.dark-mode .moon-icon {
     z-index: 2;
     animation: floatPortrait 6s ease-in-out infinite;
     transform-origin: center;
+    filter: drop-shadow(10px 10px 0px rgba(0, 0, 0, 0.15));
 }
 
 .home-portrait img {
@@ -536,6 +562,7 @@ body.dark-mode .pupil {
 
 .about-portrait img {
     max-width: 100%;
+    filter: drop-shadow(8px 8px 0px rgba(0, 0, 0, 0.12));
 }
 
 /* ===== PROJECTS SECTION ===== */
@@ -1533,5 +1560,49 @@ textarea.form-input {
 
     .gyro-hint-icon {
         font-size: 1.3rem;
+    }
+
+    /* Responsive 3D Elements (900px) */
+    .cube-deco {
+        top: -100px;
+        left: -60px;
+    }
+
+    #three-cube-container {
+        width: 240px;
+        height: 240px;
+    }
+
+    .poly-deco {
+        bottom: -60px;
+        right: -40px;
+    }
+
+    #three-poly-container {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Responsive 3D Elements (600px) */
+    .cube-deco {
+        top: -80px;
+        left: -40px;
+    }
+
+    #three-cube-container {
+        width: 200px;
+        height: 200px;
+    }
+
+    .poly-deco {
+        bottom: -40px;
+        right: -30px;
+    }
+
+    #three-poly-container {
+        width: 180px;
+        height: 180px;
     }
 }

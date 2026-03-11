@@ -21,6 +21,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
     <link href="style.css" rel="stylesheet">
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="app.js" defer></script>
 </head>
 
@@ -498,14 +500,12 @@
             <!-- Left: Geometric Decoration + Portrait -->
             <div class="home-illustration scroll-animate fade-in delay-200">
                 <!-- Image Cube Decoration -->
-                <div class="deco" data-speed="35" style="position: absolute; top: 20px; left: -40px; z-index: 1;">
-                    <img src="assets/Website Assets/cube_doodle.png" alt="" class="doodle-img"
-                        style="width: 140px; opacity: 0.8;">
+                <div class="deco cube-deco" data-speed="35">
+                    <div id="three-cube-container"></div>
                 </div>
-                <!-- Bottom Cube Decoration -->
-                <div class="deco" data-speed="-20" style="position: absolute; bottom: -20px; right: -40px; z-index: 1;">
-                    <img src="assets/Website Assets/poly_doodle.png" alt="" class="doodle-img"
-                        style="width: 100px; opacity: 0.6;">
+                <!-- Bottom Poly Decoration -->
+                <div class="deco poly-deco" data-speed="-20">
+                    <div id="three-poly-container"></div>
                 </div>
                 <!-- Portrait -->
                 <div class="home-portrait">
