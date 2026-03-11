@@ -337,9 +337,9 @@ body.dark-mode .moon-icon {
     transform: translate(-50%, -50%);
 }
 
-/* Dark mode: fill the transparent eye socket with a light oval
-   so the dark background doesn't bleed through */
-body.dark-mode .pupil-wrapper::before {
+/* Fill the transparent eye socket with a light oval
+   so the background doesn't bleed through in both light and dark modes */
+.pupil-wrapper::before {
     content: '';
     position: absolute;
     width: 58px;
@@ -349,7 +349,7 @@ body.dark-mode .pupil-wrapper::before {
     z-index: 0;
 }
 
-body.dark-mode .pupil {
+.pupil {
     position: relative;
     z-index: 1;
     /* Sits above the filler oval */
