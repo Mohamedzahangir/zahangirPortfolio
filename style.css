@@ -276,7 +276,8 @@ body.dark-mode .moon-icon {
     position: absolute;
     top: -40px;
     left: -140px;
-    z-index: 1;
+    z-index: 5;
+    pointer-events: auto;
 }
 
 #three-cube-container {
@@ -288,7 +289,8 @@ body.dark-mode .moon-icon {
     position: absolute;
     bottom: -20px;
     right: -120px;
-    z-index: 1;
+    z-index: 5;
+    pointer-events: auto;
 }
 
 #three-poly-container {
@@ -1564,13 +1566,36 @@ textarea.form-input {
 
     /* Responsive 3D Elements (900px) */
     .cube-deco {
-        top: -100px;
-        left: -60px;
+        top: -120px;
+        left: -80px;
     }
 
     #three-cube-container {
+        width: 280px;
+        height: 280px;
+    }
+
+    .poly-deco {
+        bottom: -80px;
+        right: -60px;
+    }
+
+    #three-poly-container {
         width: 240px;
         height: 240px;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Responsive 3D Elements (600px) */
+    .cube-deco {
+        top: -100px;
+        left: -50px;
+    }
+
+    #three-cube-container {
+        width: 220px;
+        height: 220px;
     }
 
     .poly-deco {
@@ -1579,30 +1604,7 @@ textarea.form-input {
     }
 
     #three-poly-container {
-        width: 220px;
-        height: 220px;
-    }
-}
-
-@media (max-width: 600px) {
-    /* Responsive 3D Elements (600px) */
-    .cube-deco {
-        top: -80px;
-        left: -40px;
-    }
-
-    #three-cube-container {
         width: 200px;
         height: 200px;
-    }
-
-    .poly-deco {
-        bottom: -40px;
-        right: -30px;
-    }
-
-    #three-poly-container {
-        width: 180px;
-        height: 180px;
     }
 }

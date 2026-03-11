@@ -633,32 +633,38 @@ function initThreeJS() {
         let isDragging = false;
         let lastPos = { x: 0, y: 0 };
         container.style.cursor = 'grab';
-        container.style.pointerEvents = 'auto';
+
+        const getPos = (e) => {
+            if (e.touches && e.touches.length > 0) {
+                return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }
+            return { x: e.clientX, y: e.clientY };
+        };
 
         const onPointerDown = (e) => {
             isDragging = true;
             container.style.cursor = 'grabbing';
-            lastPos = { x: e.clientX || e.touches?.[0].clientX, y: e.clientY || e.touches?.[0].clientY };
+            lastPos = getPos(e);
+            if (e.type === 'touchstart') e.preventDefault();
         };
 
         const onPointerMove = (e) => {
             if (!isDragging) return;
             
             // Prevent scrolling on mobile while interacting
-            if (e.touches) e.preventDefault();
+            if (e.type === 'touchmove') e.preventDefault();
 
-            const currentX = e.clientX || e.touches?.[0].clientX;
-            const currentY = e.clientY || e.touches?.[0].clientY;
+            const currentPos = getPos(e);
             
-            // Calculate velocity
-            const dx = (currentX - lastPos.x) * 0.01;
-            const dy = (currentY - lastPos.y) * 0.01;
+            // Calculate velocity - increased multiplier for mobile feel
+            const dx = (currentPos.x - lastPos.x) * 0.012;
+            const dy = (currentPos.y - lastPos.y) * 0.012;
 
             // Update persistent velocity
             velRef.y = dx;
             velRef.x = dy;
 
-            lastPos = { x: currentX, y: currentY };
+            lastPos = currentPos;
         };
 
         const onPointerUp = () => {
@@ -670,7 +676,7 @@ function initThreeJS() {
         window.addEventListener('mousemove', onPointerMove);
         window.addEventListener('mouseup', onPointerUp);
 
-        container.addEventListener('touchstart', onPointerDown);
+        container.addEventListener('touchstart', onPointerDown, { passive: false });
         window.addEventListener('touchmove', onPointerMove, { passive: false });
         window.addEventListener('touchend', onPointerUp);
     }
