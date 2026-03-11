@@ -159,7 +159,7 @@ body.dark-mode .doodle-img {
 }
 
 .logo-img {
-    height: 150px;
+    height: 90px;
     filter: invert(0);
 }
 
@@ -974,7 +974,7 @@ textarea.form-input {
     }
 
     .nav-logo .logo-img {
-        height: 100px;
+        height: 65px;
     }
 
     .theme-toggle {
@@ -1589,8 +1589,8 @@ textarea.form-input {
 @media (max-width: 600px) {
     /* Responsive 3D Elements (600px) */
     .cube-deco {
-        top: 100px;
-        left: -140px;
+        top: -100px;
+        left: -50px;
     }
 
     #three-cube-container {
@@ -1599,8 +1599,8 @@ textarea.form-input {
     }
 
     .poly-deco {
-        bottom: -150px;
-        right: -120px;
+        bottom: -60px;
+        right: -40px;
     }
 
     #three-poly-container {
