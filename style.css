@@ -1137,36 +1137,8 @@ textarea.form-input {
     .deco img {
         width: 150px !important;
         /* Scale down decorations to fit mobile neatly */
-    }
-
-    /* Exact positioning for Home decorations matching mobile Figma */
-    #home>.deco {
-        top: -10px !important;
-        right: -30px !important;
-    }
-
-    #home .home-illustration>.deco:nth-of-type(1) {
-        top: -40px !important;
-        left: -40px !important;
-        width: 150px !important;
-        height: 150px !important;
-        z-index: -1 !important;
-    }
-
-    #home .home-illustration>.deco:nth-of-type(2) {
-        bottom: 20px !important;
-        right: -40px !important;
-        width: 150px !important;
-        height: 150px !important;
-        z-index: -1 !important;
-    }
-
-    /* Hide small fillers that overlap text on mobile or make them tiny and edge-bound */
-    .small-sphere-filler {
-        display: none !important;
-    }
-
-    .small-octa-filler {
+    /* Hide all background decorations on mobile for a cleaner look */
+    .deco {
         display: none !important;
     }
 
