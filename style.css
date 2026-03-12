@@ -83,6 +83,7 @@ body.dark-mode .doodle-img {
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 100px 40px;
+    z-index: 2; /* Content sits above background decorations (z-index 0/1) */
 }
 
 /* ===== NEUMORPHIC UTILITIES ===== */
@@ -252,7 +253,8 @@ body.dark-mode .moon-icon {
 
 /* ===== HOME SECTION ===== */
 #home {
-    padding-top: 60px;
+    padding-top: 80px;
+    /* Slight increase for better airiness match */
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -274,33 +276,142 @@ body.dark-mode .moon-icon {
 /* 3D Decoration Classes */
 .cube-deco {
     position: absolute;
-    top: -40px;
-    left: -140px;
-    z-index: 5;
-    pointer-events: auto;
-}
-
-#three-cube-container {
+    top: -20px;
+    /* Higher overlap on hair/shoulder */
+    left: -80px;
+    /* Closer to face */
     width: 320px;
     height: 320px;
+    z-index: 1;
+    pointer-events: auto;
 }
 
 .poly-deco {
     position: absolute;
-    bottom: -20px;
-    right: -120px;
-    z-index: 5;
+    bottom: 10px;
+    /* Fully on screen */
+    left: 80%;
+    /* Positioned between portrait and text */
+    transform: translateX(-20%);
+    width: 320px;
+    height: 320px;
+    z-index: 1;
     pointer-events: auto;
 }
 
-#three-poly-container {
-    width: 280px;
-    height: 280px;
+/* New 3D Decorators */
+.torus-deco {
+    display: none;
+    /* Removed as requested */
+}
+
+.sphere-deco {
+    position: absolute;
+    top: 50%;
+    right: -120px;
+    /* Moved further right */
+    width: 300px;
+    height: 300px;
+    transform: translateY(-50%);
+    z-index: 0;
+    pointer-events: auto;
+}
+
+.octahedron-deco {
+    position: absolute;
+    bottom: 100px;
+    top: 50%;
+    left: -150px;
+    /* Adjusted left position for larger size */
+    width: 200px;
+    /* Made much larger */
+    height: 200px;
+    /* Made much larger */
+    z-index: 0;
+    pointer-events: auto;
+}
+
+/* Small Space Fillers */
+.small-cylinder-deco {
+    position: absolute;
+    /* top and left/right set via inline style for precise section balance */
+    width: 250px;
+    height: 250px;
+    z-index: 0;
+    pointer-events: auto;
+}
+
+
+
+.small-pyramid-deco {
+    position: absolute;
+    bottom: 30%;
+    /* Adjusted */
+    left: 2%;
+    /* Adjusted */
+    width: 130px;
+    height: 130px;
+    z-index: 0;
+    pointer-events: auto;
+}
+
+.small-poly-deco {
+    /* Positioned via inline style in Skills now */
+    z-index: 0;
+    pointer-events: auto;
+}
+
+/* Huge 3D Decorators */
+.huge-poly-deco {
+    position: absolute;
+    top: 10px;
+    right: -20vw;
+    width: 800px;
+    height: 800px;
+    z-index: 1;
+    pointer-events: auto;
+}
+
+.huge-cube-deco {
+    position: absolute;
+    top: 25%;
+    left: -17vw;
+    width: 750px;
+    height: 750px;
+    z-index: 0;
+    pointer-events: auto;
+}
+
+.huge-torus-deco {
+    position: absolute;
+    top: -100px;
+    right: -20vw;
+    /* Moved to right side */
+    width: 600px;
+    height: 600px;
+    z-index: 0;
+    pointer-events: auto;
+}
+
+.huge-rhombi-deco {
+    position: absolute;
+    bottom: 25%;
+    right: -20vw;
+    width: 650px;
+    height: 650px;
+    z-index: 0;
+    pointer-events: auto;
+}
+
+.three-shape {
+    width: 100%;
+    height: 100%;
 }
 
 .home-portrait {
     max-width: 420px;
-    margin: 0 auto;
+    margin: -60px auto 0;
+    /* Lifted upwards */
     position: relative;
     /* Container for image and pupils */
     z-index: 2;
@@ -999,7 +1110,8 @@ textarea.form-input {
         flex-direction: column;
         align-items: flex-end;
         position: absolute;
-        top: 85px; /* Offset to start below the centered logo/toggle */
+        top: 85px;
+        /* Offset to start below the centered logo/toggle */
         right: 20px;
         gap: 8px;
         pointer-events: auto;
@@ -1019,25 +1131,50 @@ textarea.form-input {
         padding: 30px 20px 20px 20px;
     }
 
-    .deco img {
-        width: 150px !important;
-        /* Scale down decorations to fit mobile neatly */
+    .deco img, .three-shape {
+        max-width: 150px !important;
+        max-height: 150px !important;
+    }
+
+    /* Huge Shapes Scaling for Mobile */
+    .huge-poly-deco, .huge-cube-deco, .huge-torus-deco, .huge-rhombi-deco {
+        width: 280px !important;
+        height: 280px !important;
+        opacity: 0.6; /* Slight fade on mobile background shapes */
+    }
+
+    /* Small Section Fillers on Mobile */
+    .small-octa-filler, .small-sphere-filler, .small-cylinder-deco, .small-pyramid-deco {
+        width: 120px !important;
+        height: 120px !important;
+        opacity: 0.5;
     }
 
     /* Exact positioning for Home decorations matching mobile Figma */
-    #home>.deco {
+    #home > .deco {
         top: -10px !important;
         right: -30px !important;
     }
 
-    #home .home-illustration>.deco:nth-of-type(1) {
+    #home .home-illustration > .deco:nth-of-type(1) {
         top: -20px !important;
         left: -30px !important;
     }
 
-    #home .home-illustration>.deco:nth-of-type(2) {
+    #home .home-illustration > .deco:nth-of-type(2) {
         bottom: 0px !important;
         right: -30px !important;
+    }
+
+    /* Fix filler overlap with text on mobile */
+    .small-octa-filler {
+        top: -40px !important;
+        right: 10% !important;
+    }
+
+    .small-sphere-filler {
+        bottom: 5% !important;
+        right: 5% !important;
     }
 
     /* Home Section */
@@ -1235,46 +1372,71 @@ textarea.form-input {
     .about-grid {
         grid-template-columns: 1.2fr 1fr;
     }
+
     .about-col-1 {
         grid-column: 1;
         order: 1;
     }
+
     .about-portrait {
         grid-column: 2;
         justify-content: center;
         margin-top: 0;
         order: 2;
     }
+
     .education-column {
         grid-column: 1 / -1;
         order: 3;
         margin-top: 20px;
     }
+
     .subsection-title.skills-title {
         grid-column: 1 / -1;
         order: 4;
     }
+
     .skills-container {
         grid-column: 1 / -1;
         order: 5;
     }
+
     .about-portrait img {
         max-height: 400px;
         object-fit: contain;
     }
+
     .home-content {
         gap: 20px;
     }
+
     .cube-deco {
         left: -80px;
         top: -60px;
         transform: scale(0.65);
     }
+
     .poly-deco {
         right: -80px;
         bottom: -40px;
         transform: scale(0.65);
     }
+
+    /* Huge Decoration Scaling for Tablets */
+    .huge-poly-deco, .huge-cube-deco, .huge-torus-deco, .huge-rhombi-deco {
+        width: 500px !important;
+        height: 500px !important;
+    }
+
+    /* Adjust positions of huge decorations for tablet aspect ratio */
+    .huge-cube-deco {
+        left: -15vw !important;
+    }
+
+    .huge-rhombi-deco {
+        right: -15vw !important;
+    }
+
     .navbar {
         padding: 0 20px;
     }
@@ -1638,6 +1800,30 @@ textarea.form-input {
         width: 240px;
         height: 240px;
     }
+}
+
+@media (max-width: 930px) and (orientation: landscape) and (max-height: 500px) {
+    .deco img, .three-shape {
+        max-width: 100px !important;
+        max-height: 100px !important;
+        opacity: 0.4 !important; /* Make them very subtle in landscape */
+    }
+
+    /* Huge Shapes in landscape on small devices */
+    .huge-poly-deco, .huge-cube-deco, .huge-torus-deco, .huge-rhombi-deco {
+        width: 150px !important;
+        height: 150px !important;
+    }
+
+    /* Adjust positions to be further out in landscape */
+    .huge-cube-deco { left: -30vw !important; top: 10% !important; }
+    .huge-rhombi-deco { right: -30vw !important; bottom: 10% !important; }
+    .huge-torus-deco { right: -30vw !important; top: -50px !important; }
+    .huge-poly-deco { right: -30vw !important; top: -50px !important; }
+
+    /* Home specific for landscape */
+    .cube-deco { top: -60px !important; left: -100px !important; }
+    .poly-deco { bottom: -40px !important; right: -80px !important; }
 }
 
 @media (max-width: 600px) {

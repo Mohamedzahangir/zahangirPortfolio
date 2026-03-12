@@ -567,10 +567,10 @@ function toggleMobileSkills() {
 
 // --- THREE.JS 3D ELEMENTS ---
 function initThreeJS() {
-    const cubeContainer = document.getElementById('three-cube-container');
-    const polyContainer = document.getElementById('three-poly-container');
+    const shapeContainers = document.querySelectorAll('.three-shape');
+    if (shapeContainers.length === 0) return;
 
-    if (!cubeContainer || !polyContainer) return;
+    const threeObjects = [];
 
     // Common setup function
     function createScene(container, type) {
@@ -600,34 +600,39 @@ function initThreeJS() {
 
         if (type === 'cube') {
             geometry = new THREE.BoxGeometry(1, 1, 1);
-            material = new THREE.MeshBasicMaterial({ visible: false }); // Hide faces completely
-            mesh = new THREE.Mesh(geometry, material);
-
-            // Clean wireframe edges
-            edges = new THREE.EdgesGeometry(geometry);
-            line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: color, transparent: true, opacity: 0.9 }));
-            mesh.add(line);
-        } else {
+        } else if (type === 'poly') {
             geometry = new THREE.IcosahedronGeometry(0.8, 0); // Flat poly
-            material = new THREE.MeshBasicMaterial({ visible: false }); // Hide faces completely
-            mesh = new THREE.Mesh(geometry, material);
-
-            edges = new THREE.EdgesGeometry(geometry);
-            line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: color, opacity: 0.4, transparent: true }));
-            mesh.add(line);
+        } else if (type === 'torus') {
+            geometry = new THREE.TorusGeometry(0.6, 0.25, 8, 24);
+        } else if (type === 'sphere') {
+            geometry = new THREE.IcosahedronGeometry(0.8, 2); // low-poly sphere
+        } else if (type === 'octahedron') {
+            geometry = new THREE.OctahedronGeometry(0.8, 0);
+        } else if (type === 'dodecahedron') {
+            geometry = new THREE.DodecahedronGeometry(0.8, 0);
+        } else if (type === 'cylinder') {
+            geometry = new THREE.CylinderGeometry(0.5, 0.5, 1.5, 12);
+        } else if (type === 'knot') {
+            geometry = new THREE.TorusKnotGeometry(0.5, 0.15, 64, 8);
+        } else if (type === 'pyramid') {
+            geometry = new THREE.TetrahedronGeometry(0.8, 0);
+        } else if (type === 'rhombicosidodecahedron') {
+            geometry = new THREE.DodecahedronGeometry(0.8, 1); // Complex Archimedean-like solid
         }
+
+        material = new THREE.MeshBasicMaterial({ visible: false }); // Hide faces completely
+        mesh = new THREE.Mesh(geometry, material);
+
+        edges = new THREE.EdgesGeometry(geometry);
+        let opacity = 0.9;
+
+        line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: color, opacity: opacity, transparent: true }));
+        mesh.add(line);
 
         scene.add(mesh);
 
         return { scene, camera, renderer, mesh };
     }
-
-    const cubeObj = createScene(cubeContainer, 'cube');
-    const polyObj = createScene(polyContainer, 'poly');
-
-    // Persistent Rotation Velocities
-    let cubeVel = { x: 0.003, y: 0.004 };
-    let polyVel = { x: -0.002, y: -0.003 };
 
     function setupInteraction(container, velRef) {
         let isDragging = false;
@@ -681,27 +686,55 @@ function initThreeJS() {
         window.addEventListener('touchend', onPointerUp);
     }
 
-    setupInteraction(cubeContainer, cubeVel);
-    setupInteraction(polyContainer, polyVel);
+    shapeContainers.forEach(container => {
+        const type = container.getAttribute('data-shape');
+        if (!type) return;
+
+        const obj = createScene(container, type);
+        obj.type = type;
+        // Check if it's a huge decoration for custom rotation
+        const parent = container.parentElement;
+        obj.isHuge = parent && (parent.classList.contains('huge-cube-deco') || parent.classList.contains('huge-rhombi-deco'));
+        obj.isHugeCube = parent && parent.classList.contains('huge-cube-deco');
+        
+        // Randomize initial velocities and float phase for variety
+        const vel = {
+            x: (Math.random() > 0.5 ? 1 : -1) * (0.002 + Math.random() * 0.003),
+            y: (Math.random() > 0.5 ? 1 : -1) * (0.002 + Math.random() * 0.003)
+        };
+        const phase = Math.random() * Math.PI * 2;
+        const speed = 0.4 + Math.random() * 0.4;
+
+        obj.vel = vel;
+        obj.phase = phase;
+        obj.speed = speed;
+        obj.container = container;
+        
+        setupInteraction(container, obj.vel);
+        threeObjects.push(obj);
+        
+        // Preserve legacy references for parallax script if they exist
+        if (type === 'cube' && typeof window.threeCube === 'undefined') window.threeCube = obj.mesh;
+        if (type === 'poly' && typeof window.threePoly === 'undefined') window.threePoly = obj.mesh;
+    });
 
     function animate() {
         requestAnimationFrame(animate);
 
         const time = Date.now() * 0.001;
 
-        if (cubeObj) {
-            cubeObj.mesh.rotation.y += cubeVel.y;
-            cubeObj.mesh.rotation.x += cubeVel.x;
-            cubeObj.mesh.position.y = Math.sin(time * 0.5) * 0.1;
-            cubeObj.renderer.render(cubeObj.scene, cubeObj.camera);
-        }
-
-        if (polyObj) {
-            polyObj.mesh.rotation.y += polyVel.y;
-            polyObj.mesh.rotation.x += polyVel.x;
-            polyObj.mesh.position.y = Math.cos(time * 0.5) * 0.1;
-            polyObj.renderer.render(polyObj.scene, polyObj.camera);
-        }
+        threeObjects.forEach(obj => {
+            if (obj.type === 'cylinder' || obj.isHuge) {
+                // Horizontal rotation (Y-axis) prioritized
+                obj.mesh.rotation.y += Math.abs(obj.vel.y) * 1.8; 
+                obj.mesh.rotation.x += obj.vel.x * 0.4;
+            } else {
+                obj.mesh.rotation.y += obj.vel.y;
+                obj.mesh.rotation.x += obj.vel.x;
+            }
+            obj.mesh.position.y = Math.sin(time * obj.speed + obj.phase) * 0.1;
+            obj.renderer.render(obj.scene, obj.camera);
+        });
     }
 
     animate();
@@ -710,34 +743,21 @@ function initThreeJS() {
     const themeObserver = new MutationObserver(() => {
         const isDarkMode = document.body.classList.contains('dark-mode');
         const color = isDarkMode ? 0xffffff : 0x333333;
-        if (cubeObj) {
-            cubeObj.mesh.material.color.setHex(color);
-            cubeObj.mesh.children[0].material.color.setHex(color);
-        }
-        if (polyObj) {
-            polyObj.mesh.material.color.setHex(color);
-            polyObj.mesh.children[0].material.color.setHex(color);
-        }
+        threeObjects.forEach(obj => {
+            obj.mesh.material.color.setHex(color);
+            obj.mesh.children[0].material.color.setHex(color);
+        });
     });
     themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
     // Handle Resize
     window.addEventListener('resize', () => {
-        if (cubeObj) {
-            cubeObj.camera.aspect = cubeContainer.clientWidth / cubeContainer.clientHeight;
-            cubeObj.camera.updateProjectionMatrix();
-            cubeObj.renderer.setSize(cubeContainer.clientWidth, cubeContainer.clientHeight);
-        }
-        if (polyObj) {
-            polyObj.camera.aspect = polyContainer.clientWidth / polyContainer.clientHeight;
-            polyObj.camera.updateProjectionMatrix();
-            polyObj.renderer.setSize(polyContainer.clientWidth, polyContainer.clientHeight);
-        }
+        threeObjects.forEach(obj => {
+            obj.camera.aspect = obj.container.clientWidth / obj.container.clientHeight;
+            obj.camera.updateProjectionMatrix();
+            obj.renderer.setSize(obj.container.clientWidth, obj.container.clientHeight);
+        });
     });
-
-    // Make objects available for parallax script
-    window.threeCube = cubeObj?.mesh;
-    window.threePoly = polyObj?.mesh;
 }
 
 // Initialize when ready

@@ -496,11 +496,11 @@
             <div class="home-illustration scroll-animate fade-in delay-200">
                 <!-- Image Cube Decoration -->
                 <div class="deco cube-deco" data-speed="35">
-                    <div id="three-cube-container"></div>
+                    <div class="three-shape" data-shape="cube"></div>
                 </div>
                 <!-- Bottom Poly Decoration -->
                 <div class="deco poly-deco" data-speed="-20">
-                    <div id="three-poly-container"></div>
+                    <div class="three-shape" data-shape="poly"></div>
                 </div>
                 <!-- Portrait -->
                 <div class="home-portrait">
@@ -519,6 +519,15 @@
 
             <!-- Right: Hero Text -->
             <div class="home-text">
+                <!-- Right Side Fillers -->
+                <div class="deco small-octa-filler" data-speed="15"
+                    style="position: absolute; right: 5%; top: 2%; width: 200px; height: 200px; z-index: 0;">
+                    <div class="three-shape" data-shape="octahedron"></div>
+                </div>
+                <div class="deco small-sphere-filler" data-speed="-10"
+                    style="position: absolute; right: 2%; bottom: 10%; width: 180px; height: 180px; z-index: 0;">
+                    <div class="three-shape" data-shape="sphere"></div>
+                </div>
                 <p class="hi-text font-script scroll-animate fade-in delay-hero-1">Hi ! am</p>
                 <h1 class="hero-name font-serif scroll-animate fade-in delay-hero-2">Mohamed Zahangir Ali Molla</h1>
                 <p class="hero-desc font-sans scroll-animate fade-in delay-hero-3">A Student passionate about web
@@ -539,6 +548,14 @@
 
     <!-- ===== ABOUT SECTION ===== -->
     <section class="section" id="about">
+        <!-- Huge Background Torus -->
+        <div class="deco huge-torus-deco" data-speed="8">
+            <div class="three-shape" data-shape="torus"></div>
+        </div>
+        <!-- Small Cylinder -->
+        <div class="deco small-cylinder-deco" data-speed="-15" style="left: -120px; top: 10%;">
+            <div class="three-shape" data-shape="cylinder"></div>
+        </div>
         <h2 class="section-title about-title font-script scroll-animate slide-up">About</h2>
         <div class="about-grid">
 
@@ -601,7 +618,14 @@
 
             <!-- Full Width Row: Skills -->
             <h3 class="subsection-title skills-title font-script scroll-animate slide-up delay-300">skills:-</h3>
-            <div class="skills-container scroll-animate slide-up delay-400" id="skillsContainer">
+            <div class="skills-container scroll-animate slide-up delay-400" id="skillsContainer"
+                style="position: relative;">
+                <!-- Huge Background Poly from Home -->
+                <div class="deco huge-poly-deco" data-speed="20"
+                    style="position: absolute; right: -25vw; top: -100px; width: 800px; height: 800px; z-index: 0; pointer-events: auto;">
+                    <div class="three-shape" data-shape="poly"></div>
+                </div>
+                <!-- Small foregroud shapes moved to Home -->
                 <!-- Frontend -->
                 <div class="skill-category" style="width: 100%; margin-bottom: 5px;">
                     <h4 class="font-sans"
@@ -683,8 +707,17 @@
 
     <!-- ===== PROJECTS SECTION ===== -->
     <section class="section" id="projects">
+        <!-- Huge Background Cube -->
+        <div class="deco huge-cube-deco" data-speed="12">
+            <div class="three-shape" data-shape="cube"></div>
+        </div>
         <h2 class="section-title font-script scroll-animate slide-up">Projects</h2>
+        <div class="deco huge-rhombi-deco" data-speed="-15">
+            <div class="three-shape" data-shape="rhombicosidodecahedron"></div>
+        </div>
         <div class="projects-container" style="position: relative;">
+            <!-- Sphere Decoration moved inside container for better alignment with opposite side -->
+
             <div class="projects-grid">
                 <div class="project-card scroll-animate fade-in delay-100" id="proj1">
                     <button class="project-close-btn neu-btn" aria-label="Close project">
@@ -2016,6 +2049,14 @@
 
     <!-- ===== CONNECT SECTION ===== -->
     <section class="section" id="connect">
+        <!-- Dodecahedron Decoration -->
+        <div class="deco sphere-deco" data-speed="8">
+            <div class="three-shape" data-shape="dodecahedron"></div>
+        </div>
+        <!-- Sphere Decoration -->
+        <div class="deco octahedron-deco" data-speed="25">
+            <div class="three-shape" data-shape="sphere"></div>
+        </div>
 
         <h2 class="section-title font-script scroll-animate slide-up">Connect</h2>
 
