@@ -1137,7 +1137,9 @@ textarea.form-input {
     .deco img {
         width: 150px !important;
         /* Scale down decorations to fit mobile neatly */
-    /* Hide all background decorations on mobile for a cleaner look */
+    }
+
+    /* Hide all background decorations on mobile for a clean content-focused look */
     .deco {
         display: none !important;
     }
