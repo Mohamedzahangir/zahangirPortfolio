@@ -1126,6 +1126,10 @@ textarea.form-input {
         color: var(--text-dark);
     }
 
+    .loader-container {
+        pointer-events: none; /* Ensure it doesn't block touches if it lingers */
+    }
+
     .section {
         padding: 30px 20px 20px 20px;
     }
@@ -1151,6 +1155,12 @@ textarea.form-input {
         right: -30px !important;
     }
 
+    /* Hide small fillers that overlap text on mobile */
+    .small-sphere-filler,
+    .small-octa-filler {
+        display: none !important;
+    }
+
     /* Home Section */
     #home {
         padding: 0 60px;
@@ -1160,9 +1170,9 @@ textarea.form-input {
         flex-direction: column;
         justify-content: flex-start;
         /* Changed from center to bring content up */
-        padding-top: 10px;
+        padding-top: 5px;
         /* Ultra-minimal top padding */
-
+        overflow: hidden;
     }
 
     .home-content {
@@ -1172,6 +1182,13 @@ textarea.form-input {
         /* Reduced gap to save vertical space */
         margin: 0;
         width: 100%;
+        position: relative;
+        z-index: 5;
+    }
+
+    .home-text {
+        margin-top: -10px;
+        padding: 0 10px;
     }
 
     .home-portrait {
