@@ -1157,10 +1157,11 @@ textarea.form-input {
     }
 
     .home-content {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
-        gap: 5px;
-        /* Reduced gap to save vertical space */
+        gap: 15px;
         margin: 0;
         width: 100%;
         position: relative;
@@ -1168,19 +1169,22 @@ textarea.form-input {
     }
 
     .home-text {
-        margin-top: -10px;
+        display: block;
         padding: 0 10px;
     }
 
-    .home-portrait {
+    .home-illustration {
         order: -1;
-        max-width: 280px;
-        /* Reduced size to prevent pushing text off-screen */
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 15px;
-        margin-bottom: 0px;
-        filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.1));
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .home-portrait {
+        max-width: 330px;
+        /* Reverted to a larger, good-looking size */
+        margin: 0 auto;
+        filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.1));
     }
 
     .hi-text {
@@ -1230,71 +1234,45 @@ textarea.form-input {
     }
 
     .about-grid {
-        display: grid;
-        grid-template-columns: 1fr 130px;
-        grid-template-rows: auto auto auto auto auto;
-        gap: 20px 15px;
+        display: block; /* Switch to block to allow wrapping */
     }
 
-    .about-col-1 {
-        display: contents;
-        /* Allows children to participate directly in about-grid */
-    }
-
-    .section-title.about-title {
-        text-align: left;
-        margin-bottom: 20px;
-    }
-
-    /* Intro title: spans both columns, above portrait */
-    .subsection-title.intro-title {
-        grid-column: 1 / 2;
-        grid-row: 1;
-        margin-bottom: 5px;
-        align-self: end;
-    }
-
-    /* Intro text: full width */
-    .about-text {
-        grid-column: 1 / 3;
-        grid-row: 2;
-        margin-bottom: 0;
-        font-size: 0.82rem;
-        line-height: 1.55;
-        padding-right: 0;
-    }
-
-    /* Portrait: full width below intro text */
+    /* Portrait: floated right inside about-col-1 for wrapping */
     .about-portrait {
-        grid-column: 1 / 3;
-        grid-row: 3;
-        width: 100%;
-        align-self: center;
-        margin-top: 15px;
-        margin-bottom: 25px;
+        float: right;
+        width: 150px;
+        /* Adjusted size for wrapping */
+        margin-left: 15px;
+        margin-bottom: 10px;
+        margin-top: 5px;
         opacity: 0.92;
         z-index: 1;
-        position: relative;
-        display: flex;
-        justify-content: center;
+    }
+
+    .about-text {
+        font-size: 0.82rem;
+        line-height: 1.55;
+        text-align: left;
+    }
+
+    .subsection-title.intro-title {
+        margin-bottom: 15px;
     }
 
     /* Education: full width below portrait */
     .education-column {
-        grid-column: 1 / 3;
-        grid-row: 4;
+        width: 100%;
+        margin-top: 25px;
     }
 
     /* Skills section: full width at the bottom */
     .subsection-title.skills-title {
-        grid-column: 1 / 3;
-        grid-row: 5;
-        margin-top: 20px;
+        width: 100%;
+        margin-top: 30px;
     }
 
     .skills-container {
-        grid-column: 1 / 3;
-        grid-row: 6;
+        width: 100%;
         justify-content: flex-start;
     }
 
