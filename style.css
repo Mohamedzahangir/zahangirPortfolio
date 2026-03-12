@@ -559,6 +559,17 @@ body.dark-mode .pupil {
     align-items: flex-start;
 }
 
+.about-portrait-col {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 10px;
+}
+
+.about-portrait-col .about-portrait {
+    max-width: 100%;
+}
+
 .subsection-title {
     font-size: 2rem;
     color: var(--text-dark);
