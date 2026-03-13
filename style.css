@@ -277,7 +277,7 @@ body.dark-mode .moon-icon {
     position: absolute;
     top: -20px;
     /* Higher overlap on hair/shoulder */
-    left: -80px;
+    left: -150px;
     /* Closer to face */
     width: 320px;
     height: 320px;
@@ -557,17 +557,6 @@ body.dark-mode .pupil {
     /* Text+Skills | Education | Portrait */
     gap: 40px;
     align-items: flex-start;
-}
-
-.about-portrait-col {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 10px;
-}
-
-.about-portrait-col .about-portrait {
-    max-width: 100%;
 }
 
 .subsection-title {
@@ -1138,7 +1127,8 @@ textarea.form-input {
     }
 
     .loader-container {
-        pointer-events: none; /* Ensure it doesn't block touches if it lingers */
+        pointer-events: none;
+        /* Ensure it doesn't block touches if it lingers */
     }
 
     .section {
@@ -1245,7 +1235,8 @@ textarea.form-input {
     }
 
     .about-grid {
-        display: block; /* Switch to block to allow wrapping */
+        display: block;
+        /* Switch to block to allow wrapping */
     }
 
     /* Portrait: floated right inside about-col-1 for wrapping */

@@ -608,8 +608,8 @@ function initThreeJS() {
             geometry = new THREE.IcosahedronGeometry(0.8, 2); // low-poly sphere
         } else if (type === 'octahedron') {
             geometry = new THREE.OctahedronGeometry(0.8, 0);
-        } else if (type === 'dodecahedron') {
-            geometry = new THREE.DodecahedronGeometry(0.8, 0);
+        } else if (type === 'icosahedron') {
+            geometry = new THREE.IcosahedronGeometry(0.8, 0);
         } else if (type === 'cylinder') {
             geometry = new THREE.CylinderGeometry(0.5, 0.5, 1.5, 12);
         } else if (type === 'knot') {
