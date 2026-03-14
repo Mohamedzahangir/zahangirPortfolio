@@ -243,47 +243,54 @@ let mouseX = 0;
 let mouseY = 0;
 let isParallaxTicking = false;
 
+// Cache for performance
+let pupilData = [];
+function cachePupilData() {
+    pupilData = Array.from(document.querySelectorAll('.pupil')).map(pupil => {
+        const rect = pupil.getBoundingClientRect();
+        return {
+            el: pupil,
+            centerX: rect.left + rect.width / 2,
+            centerY: rect.top + rect.height / 2
+        };
+    });
+}
+window.addEventListener('resize', cachePupilData);
+window.addEventListener('load', cachePupilData);
+
 // --- PUPIL IDLE RESET TIMER ---
 let pupilIdleTimer = null;
 function resetPupilsToCenter() {
-    document.querySelectorAll('.pupil').forEach(pupil => {
-        pupil.style.transform = 'translate(0px, 0px)';
+    pupilData.forEach(data => {
+        data.el.style.transform = 'translate(0px, 0px)';
+    });
+}
+
+function updatePupils(x, y) {
+    if (pupilData.length === 0) cachePupilData();
+    
+    pupilData.forEach(data => {
+        const angle = Math.atan2(y - data.centerY, x - data.centerX);
+        const rawDistance = Math.hypot(x - data.centerX, y - data.centerY);
+        const distance = Math.min(8, rawDistance / 12);
+
+        let moveX = Math.cos(angle) * distance;
+        let moveY = Math.sin(angle) * distance;
+
+        // Dampen vertical movement
+        moveY = Math.max(-2, Math.min(2, moveY));
+        data.el.style.transform = `translate(${moveX}px, ${moveY}px)`;
     });
 }
 
 document.addEventListener('mousemove', (e) => {
-    // Calculate mouse position relative to center of screen (-1 to 1)
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-
     // Reset idle timer on every mouse move
     clearTimeout(pupilIdleTimer);
     pupilIdleTimer = setTimeout(resetPupilsToCenter, 2000); // Reset after 2s idle
 
     if (!isParallaxTicking) {
         requestAnimationFrame(() => {
-            // --- Pupil Tracking ---
-            const pupils = document.querySelectorAll('.pupil');
-            pupils.forEach(pupil => {
-                const rect = pupil.getBoundingClientRect();
-                const pupilX = rect.left + rect.width / 2;
-                const pupilY = rect.top + rect.height / 2;
-
-                // Get angle and distance from mouse
-                const angle = Math.atan2(e.clientY - pupilY, e.clientX - pupilX);
-                const rawDistance = Math.hypot(e.clientX - pupilX, e.clientY - pupilY);
-                const distance = Math.min(8, rawDistance / 12);
-
-                let moveX = Math.cos(angle) * distance;
-                let moveY = Math.sin(angle) * distance;
-
-                // Dampen vertical movement — allow subtle up/down but prevent extreme rolling
-                moveY = Math.max(-2, Math.min(2, moveY));
-
-                pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
-
-            // --- 3D Parallax Decos Disabled ---
+            updatePupils(e.clientX, e.clientY);
             isParallaxTicking = false;
         });
         isParallaxTicking = true;
@@ -295,13 +302,11 @@ let gyroIdleTimer = null;
 
 function movePupilsWithGyro(gamma, beta) {
     const maxMove = 8;
-    // gamma: left/right tilt (-90 to 90). Map to horizontal pupil movement.
     let moveX = Math.max(-maxMove, Math.min(maxMove, gamma / 10));
-    // beta: forward/back tilt. Dampen to ±2px, same as mouse version.
     let moveY = Math.max(-2, Math.min(2, (beta - 45) / 20));
 
-    document.querySelectorAll('.pupil').forEach(pupil => {
-        pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    pupilData.forEach(data => {
+        data.el.style.transform = `translate(${moveX}px, ${moveY}px)`;
     });
 
     clearTimeout(gyroIdleTimer);
@@ -570,75 +575,66 @@ function initThreeJS() {
     const shapeContainers = document.querySelectorAll('.three-shape');
     if (shapeContainers.length === 0) return;
 
-    // Use a single shared renderer for all shapes to avoid WebGL context limits
+    // Shared renderer
     const sharedRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, preserveDrawingBuffer: true });
     sharedRenderer.setPixelRatio(window.devicePixelRatio);
     
     const threeObjects = [];
 
-    // Common setup function for each scene
-    function createObjectData(container, type) {
-        const width = container.clientWidth || 100;
-        const height = container.clientHeight || 100;
+    function updateObjectDimensions(obj) {
+        const w = obj.container.clientWidth || 100;
+        const h = obj.container.clientHeight || 100;
+        const pixelRatio = window.devicePixelRatio;
+        
+        obj.width = w;
+        obj.height = h;
+        obj.camera.aspect = w / h;
+        obj.camera.updateProjectionMatrix();
+        
+        obj.ctx.canvas.width = w * pixelRatio;
+        obj.ctx.canvas.height = h * pixelRatio;
+    }
 
+    function createObjectData(container, type) {
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
         camera.position.z = 2;
 
-        // Lights
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        scene.add(ambientLight);
-        const pointLight = new THREE.PointLight(0xffffff, 0.8);
-        pointLight.position.set(5, 5, 5);
-        scene.add(pointLight);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+        const pl = new THREE.PointLight(0xffffff, 0.8);
+        pl.position.set(5, 5, 5);
+        scene.add(pl);
 
-        let geometry, material, mesh, edges, line;
-
+        let geometry;
         const isDarkMode = document.body.classList.contains('dark-mode');
         const color = isDarkMode ? 0xffffff : 0x333333;
 
-        if (type === 'cube') {
-            geometry = new THREE.BoxGeometry(1, 1, 1);
-        } else if (type === 'poly') {
-            geometry = new THREE.IcosahedronGeometry(0.8, 0);
-        } else if (type === 'torus') {
-            geometry = new THREE.TorusGeometry(0.6, 0.25, 8, 24);
-        } else if (type === 'sphere') {
-            geometry = new THREE.IcosahedronGeometry(0.8, 2);
-        } else if (type === 'octahedron') {
-            geometry = new THREE.OctahedronGeometry(0.8, 0);
-        } else if (type === 'icosahedron') {
-            geometry = new THREE.IcosahedronGeometry(0.8, 0);
-        } else if (type === 'cylinder') {
-            geometry = new THREE.CylinderGeometry(0.5, 0.5, 1.5, 12);
-        } else if (type === 'knot') {
-            geometry = new THREE.TorusKnotGeometry(0.5, 0.15, 64, 8);
-        } else if (type === 'pyramid') {
-            geometry = new THREE.TetrahedronGeometry(0.8, 0);
-        } else if (type === 'rhombicosidodecahedron') {
-            geometry = new THREE.DodecahedronGeometry(0.8, 1);
+        switch(type) {
+            case 'cube': geometry = new THREE.BoxGeometry(1, 1, 1); break;
+            case 'poly': geometry = new THREE.IcosahedronGeometry(0.8, 0); break;
+            case 'torus': geometry = new THREE.TorusGeometry(0.6, 0.25, 8, 24); break;
+            case 'sphere': geometry = new THREE.IcosahedronGeometry(0.8, 2); break;
+            case 'octahedron': geometry = new THREE.OctahedronGeometry(0.8, 0); break;
+            case 'icosahedron': geometry = new THREE.IcosahedronGeometry(0.8, 0); break;
+            case 'cylinder': geometry = new THREE.CylinderGeometry(0.5, 0.5, 1.5, 12); break;
+            case 'knot': geometry = new THREE.TorusKnotGeometry(0.5, 0.15, 64, 8); break;
+            case 'pyramid': geometry = new THREE.TetrahedronGeometry(0.8, 0); break;
+            case 'rhombicosidodecahedron': geometry = new THREE.DodecahedronGeometry(0.8, 1); break;
+            default: geometry = new THREE.BoxGeometry(1,1,1);
         }
 
-        material = new THREE.MeshBasicMaterial({ visible: false });
-        mesh = new THREE.Mesh(geometry, material);
-
-        edges = new THREE.EdgesGeometry(geometry);
-        let opacity = 0.9;
-
-        line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: color, opacity: opacity, transparent: true }));
+        const mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ visible: false }));
+        const line = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9 }));
         mesh.add(line);
         scene.add(mesh);
 
-        // Individual 2D canvas for display
-        const displayCanvas = document.createElement('canvas');
-        displayCanvas.width = width * window.devicePixelRatio;
-        displayCanvas.height = height * window.devicePixelRatio;
-        displayCanvas.style.width = '100%';
-        displayCanvas.style.height = '100%';
-        const ctx = displayCanvas.getContext('2d');
-        container.appendChild(displayCanvas);
+        const canvas = document.createElement('canvas');
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        const ctx = canvas.getContext('2d');
+        container.appendChild(canvas);
 
-        return { scene, camera, mesh, ctx, width, height, container };
+        return { scene, camera, mesh, ctx, container, visible: false };
     }
 
     function setupInteraction(container, velRef) {
@@ -684,6 +680,14 @@ function initThreeJS() {
         window.addEventListener('touchend', onPointerUp);
     }
 
+    // Viewport Observation
+    const viewObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const obj = threeObjects.find(o => o.container === entry.target);
+            if (obj) obj.visible = entry.isIntersecting;
+        });
+    }, { threshold: 0.01 });
+
     shapeContainers.forEach(container => {
         const type = container.getAttribute('data-shape');
         if (!type) return;
@@ -693,31 +697,35 @@ function initThreeJS() {
         const parent = container.parentElement;
         obj.isHuge = parent && (parent.classList.contains('huge-cube-deco') || parent.classList.contains('huge-rhombi-deco'));
         
-        const vel = {
+        obj.vel = {
             x: (Math.random() > 0.5 ? 1 : -1) * (0.002 + Math.random() * 0.003),
             y: (Math.random() > 0.5 ? 1 : -1) * (0.002 + Math.random() * 0.003)
         };
-        const phase = Math.random() * Math.PI * 2;
-        const speed = 0.4 + Math.random() * 0.4;
-
-        obj.vel = vel;
-        obj.phase = phase;
-        obj.speed = speed;
+        obj.phase = Math.random() * Math.PI * 2;
+        obj.speed = 0.4 + Math.random() * 0.4;
         
+        updateObjectDimensions(obj);
         setupInteraction(container, obj.vel);
         threeObjects.push(obj);
-        
-        if (type === 'cube' && typeof window.threeCube === 'undefined') window.threeCube = obj.mesh;
-        if (type === 'poly' && typeof window.threePoly === 'undefined') window.threePoly = obj.mesh;
+        viewObserver.observe(container);
+    });
+
+    window.addEventListener('resize', () => {
+        threeObjects.forEach(updateObjectDimensions);
     });
 
     function animate() {
         requestAnimationFrame(animate);
+        
+        // Skip all Three.js work if loader is active or user is scrolled away from everything
+        if (document.body.classList.contains('wait-for-loader')) return;
+
         const time = Date.now() * 0.001;
 
         threeObjects.forEach(obj => {
-            // Update rotation and position
-            if (obj.type === 'cylinder' || obj.isHuge) {
+            if (!obj.visible) return;
+
+            if (obj.isHuge || obj.type === 'cylinder') {
                 obj.mesh.rotation.y += Math.abs(obj.vel.y) * 1.8; 
                 obj.mesh.rotation.x += obj.vel.x * 0.4;
             } else {
@@ -726,21 +734,10 @@ function initThreeJS() {
             }
             obj.mesh.position.y = Math.sin(time * obj.speed + obj.phase) * 0.1;
 
-            // Render to shared renderer and copy to target 2D canvas
-            const pixelRatio = window.devicePixelRatio;
-            const w = obj.container.clientWidth;
-            const h = obj.container.clientHeight;
-            
-            // Adjust shared renderer size only if target dimensions differ
-            sharedRenderer.setSize(w, h, false);
-            obj.camera.aspect = w / h;
-            obj.camera.updateProjectionMatrix();
-            
+            // Render to shared canvas and push to 2D
+            sharedRenderer.setSize(obj.width, obj.height, false);
             sharedRenderer.render(obj.scene, obj.camera);
             
-            // Use drawImage to copy from the shared WebGL canvas to the target 2D context
-            obj.ctx.canvas.width = w * pixelRatio;
-            obj.ctx.canvas.height = h * pixelRatio;
             obj.ctx.clearRect(0, 0, obj.ctx.canvas.width, obj.ctx.canvas.height);
             obj.ctx.drawImage(sharedRenderer.domElement, 0, 0);
         });
@@ -748,7 +745,6 @@ function initThreeJS() {
 
     animate();
 
-    // Re-check theme on toggle
     const themeObserver = new MutationObserver(() => {
         const isDarkMode = document.body.classList.contains('dark-mode');
         const color = isDarkMode ? 0xffffff : 0x333333;
@@ -759,7 +755,7 @@ function initThreeJS() {
     themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 }
 
-// Initialize when ready
+// Global initialization
 if (typeof THREE !== 'undefined') {
     initThreeJS();
 } else {
