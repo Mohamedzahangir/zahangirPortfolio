@@ -1140,8 +1140,13 @@ textarea.form-input {
         /* Scale down decorations to fit mobile neatly */
     }
 
-    /* Hide all background decorations on mobile for a clean content-focused look */
+    /* Allow 3D decorations to be visible on mobile, but keep others hidden if they clutter */
     .deco {
+        display: block !important;
+    }
+    
+    /* Ensure only relevant decorations are shown if needed, or just let them all show */
+    .deco:empty {
         display: none !important;
     }
 
@@ -1762,4 +1767,10 @@ textarea.form-input {
         width: 200px;
         height: 200px;
     }
+}
+
+/* Ensure canvases are transparent and fill container */
+.three-shape canvas {
+    background: transparent !important;
+    display: block;
 }
