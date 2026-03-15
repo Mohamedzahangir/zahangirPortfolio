@@ -1,3 +1,4 @@
 {
-    "liveServer.settings.port": 5501
+    "liveServer.settings.port": 5501,
+    "mobile-preview.device": "iPhone 15 Pro Max"
 }
