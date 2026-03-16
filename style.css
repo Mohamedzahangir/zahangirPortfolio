@@ -813,6 +813,14 @@ body.dark-mode .pupil {
     min-height: 200px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     /* minimal soft shadow */
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Kill CSS transitions during GSAP Flip to avoid layout jitter */
+.projects-grid.is-morphing .project-card {
+    transition: none !important;
 }
 
 /* Base state for UNSELECTED cards when grid is morphing */

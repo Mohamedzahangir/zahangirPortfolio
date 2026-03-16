@@ -373,8 +373,7 @@ const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('show');
-        } else {
-            entry.target.classList.remove('show');
+            revealObserver.unobserve(entry.target); // Reveal only once for performance
         }
     });
 }, revealObserverOptions);
@@ -423,13 +422,16 @@ cards.forEach(card => {
 function handleMorph(targetCard, isActivating) {
     if (activeCard === targetCard && isActivating) return;
 
+    // 0. Pause Three.js to free up frame budget for GSAP
+    window.isSystemPaused = true;
+
     // 1. Get the initial state (position/size) of all cards
     const originalState = Flip.getState(cards);
 
     // Capture the exact container width to prevent width-popping on mobile
+    const currentGridWidth = grid.offsetWidth;
     if (window.innerWidth <= 1024) {
-        const gridWidth = grid.offsetWidth;
-        grid.style.setProperty('--grid-width', `${gridWidth}px`);
+        grid.style.setProperty('--grid-width', `${currentGridWidth}px`);
     }
 
     // 2. Change the DOM
@@ -441,7 +443,6 @@ function handleMorph(targetCard, isActivating) {
         isLocked = true;
         targetCard.classList.add('is-expanded');
         activeCard = targetCard;
-        // Optionally scroll to top of the grid when expanding to ensure the sticky item is visible
         if (window.innerWidth > 1024) {
             grid.scrollTop = 0;
         }
@@ -453,20 +454,26 @@ function handleMorph(targetCard, isActivating) {
     }
 
     // 3. Flip Play
-    grid.style.minHeight = grid.offsetHeight + 'px'; // Lock height to prevent collapse
+    const gridHeight = grid.offsetHeight;
+    grid.style.minHeight = gridHeight + 'px'; 
 
     Flip.from(originalState, {
-        duration: 0.7,
-        ease: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        duration: 0.6, // Slightly faster for snappiness
+        ease: 'power3.inOut',
         nested: true,
         zIndex: 10,
         scale: true,
-        // absolute: true removed to prevent height collapse
         onComplete: () => {
-            grid.style.minHeight = ''; // Release height
+            grid.style.minHeight = ''; 
             if (isActivating) updateScrollArrows();
+            
+            // Resume Three.js after animation finishes
+            window.isSystemPaused = false;
         }
     });
+
+    // Safety fallback to resume Three.js in case of flip failure
+    setTimeout(() => { window.isSystemPaused = false; }, 800);
 }
 
 // --- PROJECTS SCROLL ARROWS ---
@@ -584,6 +591,9 @@ function initThreeJS() {
     const sharedRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, preserveDrawingBuffer: true });
     sharedRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
     
+    // Performance flag to pause rendering during heavy GSAP transitions
+    window.isSystemPaused = false;
+
     // Geometry and Material Cache
     const geometryCache = {
         cube: new THREE.BoxGeometry(1, 1, 1),
@@ -729,8 +739,9 @@ function initThreeJS() {
     function animate() {
         requestAnimationFrame(animate);
         
-        // Skip all Three.js work if loader is active or user is scrolled away from everything
-        if (document.body.classList.contains('wait-for-loader')) return;
+        // Skip all Three.js work if system is explicitly paused (e.g. during morphing)
+        // or if loader is active or user is scrolled away from everything
+        if (window.isSystemPaused || document.body.classList.contains('wait-for-loader')) return;
 
         const time = Date.now() * 0.001;
 
