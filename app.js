@@ -228,7 +228,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         lenis.scrollTo(this.getAttribute('href'));
-    });
+    }, { passive: false }); // Clicking usually shouldn't be passive if we preventDefault
 });
 
 function raf(time) {
@@ -279,7 +279,7 @@ function updatePupils(x, y) {
 
         // Dampen vertical movement
         moveY = Math.max(-2, Math.min(2, moveY));
-        data.el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        data.el.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`; // Use translate3d for hardware acceleration
     });
 }
 
@@ -295,7 +295,7 @@ document.addEventListener('mousemove', (e) => {
         });
         isParallaxTicking = true;
     }
-});
+}, { passive: true });
 
 // --- MOBILE GYROSCOPE PUPIL TRACKING ---
 let gyroIdleTimer = null;
@@ -306,7 +306,7 @@ function movePupilsWithGyro(gamma, beta) {
     let moveY = Math.max(-2, Math.min(2, (beta - 45) / 20));
 
     pupilData.forEach(data => {
-        data.el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        data.el.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`; // Use translate3d for hardware acceleration
     });
 
     clearTimeout(gyroIdleTimer);
@@ -321,15 +321,15 @@ if (window.DeviceOrientationEvent) {
                 if (state === 'granted') {
                     window.addEventListener('deviceorientation', (e) => {
                         movePupilsWithGyro(e.gamma || 0, e.beta || 45);
-                    });
+                    }, { passive: true });
                 }
             }).catch(console.error);
-        }, { once: true });
+        }, { once: true, passive: true });
     } else {
         // Android and other browsers — no permission needed
         window.addEventListener('deviceorientation', (e) => {
             movePupilsWithGyro(e.gamma || 0, e.beta || 45);
-        });
+        }, { passive: true });
     }
 }
 
@@ -356,7 +356,7 @@ document.addEventListener('touchmove', (e) => {
         // Same vertical dampening as mouse/gyro
         moveY = Math.max(-2, Math.min(2, moveY));
 
-        pupil.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        pupil.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`; // Use translate3d for hardware acceleration
     });
 }, { passive: true });
 
@@ -550,10 +550,15 @@ if (upArrow && downArrow) {
         requestAnimationFrame(updateScrollArrows);
     });
 
-    // Also update on resize
+    // Also update on resize with debounce
+    let resizeTimer;
     window.addEventListener('resize', () => {
-        requestAnimationFrame(updateScrollArrows);
-    });
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            requestAnimationFrame(updateScrollArrows);
+            threeObjects.forEach(updateObjectDimensions);
+        }, 150);
+    }, { passive: true });
 }
 
 // --- MOBILE SKILLS TOGGLE ---
@@ -577,22 +582,49 @@ function initThreeJS() {
 
     // Shared renderer
     const sharedRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, preserveDrawingBuffer: true });
-    sharedRenderer.setPixelRatio(window.devicePixelRatio);
+    sharedRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
     
+    // Geometry and Material Cache
+    const geometryCache = {
+        cube: new THREE.BoxGeometry(1, 1, 1),
+        poly: new THREE.IcosahedronGeometry(0.8, 0),
+        torus: new THREE.TorusGeometry(0.6, 0.25, 8, 24),
+        sphere: new THREE.IcosahedronGeometry(0.8, 2),
+        octahedron: new THREE.OctahedronGeometry(0.8, 0),
+        icosahedron: new THREE.IcosahedronGeometry(0.8, 0),
+        cylinder: new THREE.CylinderGeometry(0.5, 0.5, 1.5, 12),
+        knot: new THREE.TorusKnotGeometry(0.5, 0.15, 64, 8),
+        pyramid: new THREE.TetrahedronGeometry(0.8, 0),
+        rhombicosidodecahedron: new THREE.DodecahedronGeometry(0.8, 1)
+    };
+
+    const edgeCache = {};
+    Object.keys(geometryCache).forEach(key => {
+        edgeCache[key] = new THREE.EdgesGeometry(geometryCache[key]);
+    });
+
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const initialColor = isDarkMode ? 0xffffff : 0x333333;
+    const sharedLineMaterial = new THREE.LineBasicMaterial({ 
+        color: initialColor, 
+        transparent: true, 
+        opacity: 0.9 
+    });
+
     const threeObjects = [];
 
     function updateObjectDimensions(obj) {
         const w = obj.container.clientWidth || 100;
         const h = obj.container.clientHeight || 100;
-        const pixelRatio = window.devicePixelRatio;
+        const pixelRatio = sharedRenderer.getPixelRatio();
         
         obj.width = w;
         obj.height = h;
         obj.camera.aspect = w / h;
         obj.camera.updateProjectionMatrix();
         
-        obj.ctx.canvas.width = w * pixelRatio;
-        obj.ctx.canvas.height = h * pixelRatio;
+        obj.canvas.width = w * pixelRatio;
+        obj.canvas.height = h * pixelRatio;
     }
 
     function createObjectData(container, type) {
@@ -600,41 +632,21 @@ function initThreeJS() {
         const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
         camera.position.z = 2;
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-        const pl = new THREE.PointLight(0xffffff, 0.8);
-        pl.position.set(5, 5, 5);
-        scene.add(pl);
-
-        let geometry;
-        const isDarkMode = document.body.classList.contains('dark-mode');
-        const color = isDarkMode ? 0xffffff : 0x333333;
-
-        switch(type) {
-            case 'cube': geometry = new THREE.BoxGeometry(1, 1, 1); break;
-            case 'poly': geometry = new THREE.IcosahedronGeometry(0.8, 0); break;
-            case 'torus': geometry = new THREE.TorusGeometry(0.6, 0.25, 8, 24); break;
-            case 'sphere': geometry = new THREE.IcosahedronGeometry(0.8, 2); break;
-            case 'octahedron': geometry = new THREE.OctahedronGeometry(0.8, 0); break;
-            case 'icosahedron': geometry = new THREE.IcosahedronGeometry(0.8, 0); break;
-            case 'cylinder': geometry = new THREE.CylinderGeometry(0.5, 0.5, 1.5, 12); break;
-            case 'knot': geometry = new THREE.TorusKnotGeometry(0.5, 0.15, 64, 8); break;
-            case 'pyramid': geometry = new THREE.TetrahedronGeometry(0.8, 0); break;
-            case 'rhombicosidodecahedron': geometry = new THREE.DodecahedronGeometry(0.8, 1); break;
-            default: geometry = new THREE.BoxGeometry(1,1,1);
-        }
+        const geometry = geometryCache[type] || geometryCache.cube;
+        const edges = edgeCache[type] || edgeCache.cube;
 
         const mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ visible: false }));
-        const line = new THREE.LineSegments(new THREE.EdgesGeometry(geometry), new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9 }));
+        const line = new THREE.LineSegments(edges, sharedLineMaterial);
         mesh.add(line);
         scene.add(mesh);
 
         const canvas = document.createElement('canvas');
         canvas.style.width = '100%';
         canvas.style.height = '100%';
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true }); // Opt-in to alpha but keep it light
         container.appendChild(canvas);
 
-        return { scene, camera, mesh, ctx, container, visible: false };
+        return { scene, camera, mesh, ctx, canvas, container, visible: false };
     }
 
     function setupInteraction(container, velRef) {
@@ -735,10 +747,14 @@ function initThreeJS() {
             obj.mesh.position.y = Math.sin(time * obj.speed + obj.phase) * 0.1;
 
             // Render to shared canvas and push to 2D
-            sharedRenderer.setSize(obj.width, obj.height, false);
+            // Only set size if it changed (optimization: setSize is expensive)
+            const currentSize = sharedRenderer.getSize(new THREE.Vector2());
+            if (currentSize.width !== obj.width || currentSize.height !== obj.height) {
+                sharedRenderer.setSize(obj.width, obj.height, false);
+            }
             sharedRenderer.render(obj.scene, obj.camera);
             
-            obj.ctx.clearRect(0, 0, obj.ctx.canvas.width, obj.ctx.canvas.height);
+            obj.ctx.clearRect(0, 0, obj.canvas.width, obj.canvas.height);
             obj.ctx.drawImage(sharedRenderer.domElement, 0, 0);
         });
     }
