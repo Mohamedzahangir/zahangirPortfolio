@@ -741,7 +741,10 @@ function initThreeJS() {
         
         // Skip all Three.js work if system is explicitly paused (e.g. during morphing)
         // or if loader is active or user is scrolled away from everything
-        if (window.isSystemPaused || document.body.classList.contains('wait-for-loader')) return;
+        // OR if we are on a small screen (mobile/tablet) to save resources
+        if (window.isSystemPaused || 
+            document.body.classList.contains('wait-for-loader') ||
+            window.innerWidth < 768) return;
 
         const time = Date.now() * 0.001;
 

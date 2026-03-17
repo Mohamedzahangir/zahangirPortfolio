@@ -1734,50 +1734,15 @@ textarea.form-input {
         font-size: 1.3rem;
     }
 
-    /* Responsive 3D Elements (900px) */
-    .cube-deco {
-        top: -120px;
-        left: -80px;
-    }
-
-    #three-cube-container {
-        width: 280px;
-        height: 280px;
-    }
-
-    .poly-deco {
-        bottom: -80px;
-        right: -60px;
-    }
-
-    #three-poly-container {
-        width: 240px;
-        height: 240px;
+    /* Hide 3D Elements on Mobile */
+    .deco,
+    .three-shape {
+        display: none !important;
     }
 }
 
 @media (max-width: 600px) {
 
-    /* Responsive 3D Elements (600px) */
-    .cube-deco {
-        top: -100px;
-        left: -50px;
-    }
-
-    #three-cube-container {
-        width: 220px;
-        height: 220px;
-    }
-
-    .poly-deco {
-        bottom: -60px;
-        right: -40px;
-    }
-
-    #three-poly-container {
-        width: 200px;
-        height: 200px;
-    }
 }
 
 /* Ensure canvases are transparent and fill container */
