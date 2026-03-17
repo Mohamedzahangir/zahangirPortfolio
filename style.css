@@ -1084,7 +1084,7 @@ textarea.form-input {
     /* Navbar: Embedded vertical sidebar on the right */
     .navbar {
         height: auto;
-        padding: 15px 20px;
+        padding: 15px 35px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -1122,7 +1122,7 @@ textarea.form-input {
         position: absolute;
         top: 85px;
         /* Offset to start below the centered logo/toggle */
-        right: 20px;
+        right: 35px;
         gap: 8px;
         pointer-events: auto;
     }
