@@ -1155,7 +1155,7 @@ textarea.form-input {
     .deco {
         display: block !important;
     }
-    
+
     /* Ensure only relevant decorations are shown if needed, or just let them all show */
     .deco:empty {
         display: none !important;
@@ -1351,6 +1351,7 @@ textarea.form-input {
         grid-column: 2;
         justify-content: center;
         margin-top: 0;
+        margin-bottom: 0;
         order: 2;
     }
 
@@ -1741,9 +1742,7 @@ textarea.form-input {
     }
 }
 
-@media (max-width: 600px) {
-
-}
+@media (max-width: 600px) {}
 
 /* Ensure canvases are transparent and fill container */
 .three-shape canvas {
