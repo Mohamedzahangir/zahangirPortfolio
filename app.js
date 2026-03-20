@@ -587,14 +587,6 @@ function initThreeJS() {
     const shapeContainers = document.querySelectorAll('.three-shape');
     if (shapeContainers.length === 0) return;
 
-    // Shared renderer
-    const sharedRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, preserveDrawingBuffer: true });
-    sharedRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
-    
-    // Performance flag to pause rendering during heavy GSAP transitions
-    window.isSystemPaused = false;
-
-    // Geometry and Material Cache
     const geometryCache = {
         cube: new THREE.BoxGeometry(1, 1, 1),
         poly: new THREE.IcosahedronGeometry(0.8, 0),
@@ -622,19 +614,18 @@ function initThreeJS() {
     });
 
     const threeObjects = [];
+    // Performance flag to pause all rendering during heavy GSAP transitions
+    window.isSystemPaused = false;
 
     function updateObjectDimensions(obj) {
         const w = obj.container.clientWidth || 100;
         const h = obj.container.clientHeight || 100;
-        const pixelRatio = sharedRenderer.getPixelRatio();
         
         obj.width = w;
         obj.height = h;
         obj.camera.aspect = w / h;
         obj.camera.updateProjectionMatrix();
-        
-        obj.canvas.width = w * pixelRatio;
-        obj.canvas.height = h * pixelRatio;
+        obj.renderer.setSize(w, h, false);
     }
 
     function createObjectData(container, type) {
@@ -650,13 +641,14 @@ function initThreeJS() {
         mesh.add(line);
         scene.add(mesh);
 
-        const canvas = document.createElement('canvas');
-        canvas.style.width = '100%';
-        canvas.style.height = '100%';
-        const ctx = canvas.getContext('2d', { alpha: true }); // Opt-in to alpha but keep it light
-        container.appendChild(canvas);
+        // Create a dedicated renderer for this container
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.domElement.style.width = '100%';
+        renderer.domElement.style.height = '100%';
+        container.appendChild(renderer.domElement);
 
-        return { scene, camera, mesh, ctx, canvas, container, visible: false };
+        return { scene, camera, mesh, renderer, container, visible: false };
     }
 
     function setupInteraction(container, velRef) {
@@ -740,17 +732,16 @@ function initThreeJS() {
         requestAnimationFrame(animate);
         
         // Skip all Three.js work if system is explicitly paused (e.g. during morphing)
-        // or if loader is active or user is scrolled away from everything
-        // OR if we are on a small screen (mobile/tablet) to save resources
+        // or if loader is active
         if (window.isSystemPaused || 
-            document.body.classList.contains('wait-for-loader') ||
-            window.innerWidth < 768) return;
+            document.body.classList.contains('wait-for-loader')) return;
 
         const time = Date.now() * 0.001;
 
         threeObjects.forEach(obj => {
             if (!obj.visible) return;
 
+            // Rotation Logic (Exact parity)
             if (obj.isHuge || obj.type === 'cylinder') {
                 obj.mesh.rotation.y += Math.abs(obj.vel.y) * 1.8; 
                 obj.mesh.rotation.x += obj.vel.x * 0.4;
@@ -760,16 +751,8 @@ function initThreeJS() {
             }
             obj.mesh.position.y = Math.sin(time * obj.speed + obj.phase) * 0.1;
 
-            // Render to shared canvas and push to 2D
-            // Only set size if it changed (optimization: setSize is expensive)
-            const currentSize = sharedRenderer.getSize(new THREE.Vector2());
-            if (currentSize.width !== obj.width || currentSize.height !== obj.height) {
-                sharedRenderer.setSize(obj.width, obj.height, false);
-            }
-            sharedRenderer.render(obj.scene, obj.camera);
-            
-            obj.ctx.clearRect(0, 0, obj.canvas.width, obj.canvas.height);
-            obj.ctx.drawImage(sharedRenderer.domElement, 0, 0);
+            // Direct render to the container's renderer
+            obj.renderer.render(obj.scene, obj.camera);
         });
     }
 
