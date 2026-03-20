@@ -124,18 +124,16 @@ const navLinks = document.querySelectorAll('.nav-link');
 // The intersection observer watches which section is mostly in view
 const observerOptions = {
     root: null,
-    rootMargin: '0px',
-    threshold: 0.5 // Trigger when 50% of the section is visible
+    rootMargin: '-20% 0px -20% 0px', // Focus on the middle of the viewport
+    threshold: 0
 };
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const id = entry.target.getAttribute('id');
-            // Remove active from all links
             navLinks.forEach(link => link.classList.remove('active'));
 
-            // Add active to the corresponding link
             const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
             if (activeLink) {
                 activeLink.classList.add('active');
@@ -143,6 +141,8 @@ const observer = new IntersectionObserver((entries) => {
         }
     });
 }, observerOptions);
+
+
 
 sections.forEach(section => {
     observer.observe(section);
@@ -768,11 +768,31 @@ function initThreeJS() {
     themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 }
 
+// --- SCROLL PARALLAX EFFECT ---
+function initScrollParallax() {
+    const parallaxElements = document.querySelectorAll('[data-speed]');
+    if (parallaxElements.length === 0) return;
+
+    // Use Lenis scroll event for synchronized parallax
+    lenis.on('scroll', ({ scroll }) => {
+        parallaxElements.forEach(el => {
+            const speed = parseFloat(el.getAttribute('data-speed')) || 0;
+            // The factor 0.1 is for subtleness, speed is the direction/intensity
+            const yPos = (scroll * speed) / 100;
+            el.style.transform = `translate3d(0, ${yPos}px, 0)`;
+        });
+    });
+}
+
 // Global initialization
 if (typeof THREE !== 'undefined') {
     initThreeJS();
+    initScrollParallax();
 } else {
     window.addEventListener('load', () => {
-        if (typeof THREE !== 'undefined') initThreeJS();
+        if (typeof THREE !== 'undefined') {
+            initThreeJS();
+            initScrollParallax();
+        }
     });
 }

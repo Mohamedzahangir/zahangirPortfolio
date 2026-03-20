@@ -85,6 +85,8 @@ body.dark-mode .doodle-img {
     padding: 100px 40px;
 }
 
+
+
 /* ===== NEUMORPHIC UTILITIES ===== */
 .neu-flat {
     background: var(--bg);
@@ -170,6 +172,7 @@ body.dark-mode .logo-img {
 .nav-links {
     display: flex;
     gap: 30px;
+    position: relative; /* For indicator */
 }
 
 .nav-link {
@@ -187,6 +190,16 @@ body.dark-mode .logo-img {
 .nav-link.active {
     font-weight: 700;
     color: var(--text-dark);
+    transform: scale(1.15) translateY(-2px);
+    letter-spacing: 1px;
+    font-style: italic; /* The 'morphing' effect */
+}
+
+@media (max-width: 767.98px) {
+    .nav-link.active {
+        transform: scale(1.1) translateX(-5px);
+        font-style: italic;
+    }
 }
 
 /* Theme Toggle Pill */
@@ -308,9 +321,8 @@ body.dark-mode .moon-icon {
 
 .sphere-deco {
     position: absolute;
-    top: 50%;
-    right: -120px;
-    /* Moved further right */
+    top: 10%; /* More and more up */
+    right: -150px; /* More right */
     width: 300px;
     height: 300px;
     transform: translateY(-50%);
@@ -365,8 +377,8 @@ body.dark-mode .moon-icon {
 /* Huge 3D Decorators */
 .huge-poly-deco {
     position: absolute;
-    top: 10px;
-    right: -20vw;
+    top: -300px; /* Moved up to avoid overlap with projects */
+    right: -25vw;
     width: 800px;
     height: 800px;
     z-index: 1;
@@ -402,6 +414,10 @@ body.dark-mode .moon-icon {
     height: 650px;
     z-index: 0;
     pointer-events: auto;
+}
+
+[data-speed] {
+    will-change: transform;
 }
 
 .three-shape {
