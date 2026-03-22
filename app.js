@@ -76,6 +76,45 @@ window.addEventListener('load', () => {
                 }
             }
 
+            // --- INTERACTION HINT LOGIC ---
+            const hint = document.getElementById('interactionHint');
+            if (!hint) return;
+
+            let hasInteracted = false;
+            let fadeOutTimeout = null;
+            let idleTimeout = null;
+
+            const handleInteraction = () => {
+                if (hasInteracted) return;
+                hasInteracted = true;
+
+                clearTimeout(idleTimeout);
+                hint.classList.add('fade-out');
+
+                // Remove listeners after first interaction
+                ['mousedown', 'mousemove', 'touchstart', 'wheel'].forEach(evt => {
+                    document.removeEventListener(evt, handleInteraction);
+                });
+            };
+
+            // Show hint 1s after loader finishes (3.2s draw + 1.2s flight + 1s delay)
+            // Wait for the total loader sequence to end
+            setTimeout(() => {
+                hint.classList.add('visible');
+
+                // After 3s of visibility, if no interaction, go idle
+                idleTimeout = setTimeout(() => {
+                    if (!hasInteracted) {
+                        hint.classList.add('idle');
+                    }
+                }, 3000);
+
+                // Listen for ANY interaction to kill the hint
+                ['mousedown', 'mousemove', 'touchstart', 'wheel'].forEach(evt => {
+                    document.addEventListener(evt, handleInteraction, { once: true, passive: true });
+                });
+            }, 1100); // ~1.1s buffer after loader sequence (3.2 + 1.2 = 4.4s, so 5.5s total from page load)
+
         }, 1200); // Wait 1.2s for the transform to finish
 
     }, 3200); // Wait 3.2s for Phase 1 (3s drawing + 0.2s pause)

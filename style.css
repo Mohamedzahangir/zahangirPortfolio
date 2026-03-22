@@ -1814,3 +1814,43 @@ textarea.form-input {
     background: transparent !important;
     display: block;
 }
+
+/* ===== INTERACTION HINT ===== */
+.interaction-hint {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    top: 68vh;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.6);
+    opacity: 0;
+    text-align: center;
+    letter-spacing: 1.2px;
+    line-height: 1.6;
+    pointer-events: none;
+    z-index: 10;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interaction-hint.visible {
+    opacity: 0.6;
+    transform: translateX(-50%) translateY(0);
+}
+
+.interaction-hint.fade-out {
+    opacity: 0 !important;
+    transition: opacity 0.35s ease-out !important;
+}
+
+.interaction-hint.idle {
+    opacity: 0.2;
+}
+
+@media (max-width: 767.98px) {
+    .interaction-hint {
+        top: 72vh;
+        font-size: 13px;
+    }
+}
