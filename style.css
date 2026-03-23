@@ -16,6 +16,9 @@
 
     /* Layout Constants */
     --max-width: 1200px;
+
+    /* Background Grid */
+    --grid-color: rgba(26, 26, 26, 0.05); /* Very subtle */
 }
 
 body.dark-mode {
@@ -29,6 +32,7 @@ body.dark-mode {
     --shadow-light: #2a2a2a;
     --footer-bg: #2b2b2b;
     /* Slightly darker than new background #3D3D3D for contrast */
+    --grid-color: rgba(241, 241, 230, 0.03); /* Even subtler in dark mode */
 }
 
 /* ===== RESET ===== */
@@ -48,11 +52,12 @@ body {
     color: var(--text-dark);
     overflow-x: hidden;
     transition: background 0.3s, color 0.3s;
+    perspective: 1200px; /* Base for depth effects */
 }
 
 body.no-scroll {
     overflow: hidden;
-    height: 100vh;
+    height: 100dvh;
 }
 
 a {
@@ -85,6 +90,20 @@ body.dark-mode .doodle-img {
     padding: 100px 40px;
 }
 
+/* ===== BACKGROUND GRID ===== */
+.bg-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Behind everything including decorations */
+    pointer-events: none;
+    background-image: 
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 80px 80px; /* Large architectural grid */
+}
 
 
 /* ===== NEUMORPHIC UTILITIES ===== */
@@ -108,9 +127,9 @@ body.dark-mode .doodle-img {
 }
 
 .neu-btn:hover {
-    box-shadow: 3px 3px 6px var(--shadow-dark),
-        -3px -3px 6px var(--shadow-light);
-    transform: translateY(1px);
+    box-shadow: 8px 8px 16px var(--shadow-dark),
+        -8px -8px 16px var(--shadow-light);
+    transform: translateY(-3px) scale(1.02);
 }
 
 .neu-btn:active {
@@ -157,6 +176,11 @@ body.dark-mode .doodle-img {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: scale(1.05);
 }
 
 .stat-divider {
@@ -212,6 +236,11 @@ body.dark-mode .doodle-img {
 .logo-img {
     height: 90px;
     filter: invert(0);
+    transition: transform 0.3s ease;
+}
+
+.nav-logo a:hover .logo-img {
+    transform: scale(1.05);
 }
 
 body.dark-mode .logo-img {
@@ -234,6 +263,7 @@ body.dark-mode .logo-img {
 
 .nav-link:hover {
     color: var(--text-dark);
+    transform: scale(1.05);
 }
 
 .nav-link.active {
@@ -243,6 +273,7 @@ body.dark-mode .logo-img {
     letter-spacing: 1px;
     font-style: italic; /* The 'morphing' effect */
 }
+
 
 @media (max-width: 767.98px) {
     .nav-link.active {
@@ -316,7 +347,7 @@ body.dark-mode .moon-icon {
 #home {
     padding-top: 80px;
     /* Slight increase for better airiness match */
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
 }
@@ -427,7 +458,7 @@ body.dark-mode .moon-icon {
 .huge-poly-deco {
     position: absolute;
     top: -300px; /* Moved up to avoid overlap with projects */
-    right: -25vw;
+    right: -25dvw;
     width: 800px;
     height: 800px;
     z-index: 1;
@@ -437,7 +468,7 @@ body.dark-mode .moon-icon {
 .huge-cube-deco {
     position: absolute;
     top: 25%;
-    left: -17vw;
+    left: -17dvw;
     width: 750px;
     height: 750px;
     z-index: 0;
@@ -447,7 +478,7 @@ body.dark-mode .moon-icon {
 .huge-torus-deco {
     position: absolute;
     top: -100px;
-    right: -20vw;
+    right: -20dvw;
     /* Moved to right side */
     width: 600px;
     height: 600px;
@@ -458,7 +489,7 @@ body.dark-mode .moon-icon {
 .huge-rhombi-deco {
     position: absolute;
     bottom: 25%;
-    right: -20vw;
+    right: -20dvw;
     width: 650px;
     height: 650px;
     z-index: 0;
@@ -667,9 +698,9 @@ body.dark-mode .pupil {
 }
 
 .skill-pill:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 8px 8px 16px var(--shadow-dark),
-        -8px -8px 16px var(--shadow-light);
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 10px 10px 20px var(--shadow-dark),
+        -10px -10px 20px var(--shadow-light);
 }
 
 .show-more-skills-btn {
@@ -733,6 +764,16 @@ body.dark-mode .pupil {
 .edu-date {
     font-size: 0.8rem;
     color: var(--text-light);
+}
+
+.edu-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.edu-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 8px 8px 16px var(--shadow-dark),
+               -8px -8px 16px var(--shadow-light);
 }
 
 .about-portrait {
@@ -881,6 +922,13 @@ body.dark-mode .pupil {
     will-change: transform, opacity;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+.project-card:not(.is-expanded):hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 12px 12px 25px var(--shadow-dark),
+               -12px -12px 25px var(--shadow-light);
 }
 
 /* Kill CSS transitions during GSAP Flip to avoid layout jitter */
@@ -1066,6 +1114,12 @@ body.dark-mode .pupil {
     font-family: 'Caveat', cursive;
     font-size: 1.3rem;
     color: var(--text-dark);
+    transition: box-shadow 0.3s ease;
+}
+
+.form-input:hover {
+    box-shadow: inset 6px 6px 12px var(--shadow-dark),
+                inset -6px -6px 12px var(--shadow-light);
 }
 
 .form-input::placeholder {
@@ -1508,8 +1562,8 @@ textarea.form-input {
         position: sticky;
         left: 0;
         top: 0;
-        width: var(--grid-width, calc(100vw - 80px));
-        /* 100vw minus padding fallback */
+        width: var(--grid-width, calc(100dvw - 80px));
+        /* 100dvw minus padding fallback */
         height: auto;
         min-height: 350px;
         z-index: 10;
@@ -1689,8 +1743,8 @@ textarea.form-input {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
     background-color: var(--bg);
     display: flex;
     justify-content: center;
@@ -1820,7 +1874,7 @@ textarea.form-input {
     position: absolute;
     left: 50%;
     transform: translateX(-50%) translateY(10px);
-    top: 68vh;
+    top: 68dvh;
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     color: rgba(255, 255, 255, 0.6);
@@ -1850,7 +1904,7 @@ textarea.form-input {
 
 @media (max-width: 767.98px) {
     .interaction-hint {
-        top: 72vh;
+        top: 72dvh;
         font-size: 13px;
     }
 }

@@ -27,6 +27,9 @@
 </head>
 
 <body class="light-mode">
+    <div class="bg-grid"></div>
+
+
 
     <!-- ===== LOADING SCREEN ===== -->
     <div id="loader" class="loader-container">
@@ -549,7 +552,7 @@
                         <span class="stat-value">Developer</span>
                     </div>
                 </div>
-                <div class="hero-buttons scroll-animate fade-in delay-hero-5">
+                <div class="hero-buttons">
                     <a href="#projects" class="btn neu-btn">View My Work</a>
                     <a href="#connect" class="btn neu-btn">Let's Connect</a>
                 </div>
@@ -557,7 +560,7 @@
         </div>
 
         <!-- Mobile Figma Scroll Indicator -->
-        <a href="#about" class="home-scroll-down scroll-animate fade-in delay-hero-5">
+        <a href="#about" class="home-scroll-down">
             <i class="fas fa-chevron-down"></i>
         </a>
 
@@ -578,18 +581,18 @@
         <div class="deco small-cylinder-deco" data-speed="-15" style="left: -120px; top: 10%;">
             <div class="three-shape" data-shape="cylinder"></div>
         </div>
-        <h2 class="section-title about-title font-script scroll-animate slide-up" data-speed="-5">About</h2>
+        <h2 class="section-title about-title font-script" data-speed="-5">About</h2>
         <div class="about-grid">
 
             <!-- Column 1: Intro + Skills -->
             <div class="about-col-1">
-                <h3 class="subsection-title intro-title font-script scroll-animate slide-up delay-100">Intro :-</h3>
+                <h3 class="subsection-title intro-title font-script">Intro :-</h3>
                 <!-- Moved here for mobile wrapping -->
-                <div class="about-portrait hide-on-desktop scroll-animate fade-in delay-200">
+                <div class="about-portrait hide-on-desktop">
                     <img src="assets/Website%20Assets/v46_28(1).png" alt="Zahangir portrait illustration" loading="lazy"
                         decoding="async">
                 </div>
-                <p class="about-text font-sans scroll-animate slide-up delay-200">
+                <p class="about-text font-sans">
                     Hi, I'm Mohd. Zahangir, a B.Tech AI & Data Science student with a passion for building intelligent,
                     data-driven solutions. I love turning ideas into smart applications and exploring technologies like
                     machine learning, software development, and system design. My work focuses on creating projects that
@@ -601,9 +604,9 @@
 
             <!-- Column 2: Education Cards -->
             <div class="education-column">
-                <h3 class="subsection-title edu-title font-script scroll-animate slide-up">Education :-</h3>
+                <h3 class="subsection-title edu-title font-script">Education :-</h3>
 
-                <div class="edu-card neu-flat scroll-animate slide-up delay-100">
+                <div class="edu-card neu-flat">
                     <div class="edu-logo" style="border: none; padding: 2px;"><img src="assets/Eductation/anna-logo.png"
                             alt="Anna University Logo"
                             style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;" loading="lazy"
@@ -615,7 +618,7 @@
                     </div>
                 </div>
 
-                <div class="edu-card neu-flat scroll-animate slide-up delay-200">
+                <div class="edu-card neu-flat">
                     <div class="edu-logo" style="border: none; padding: 2px;"><img
                             src="assets/Eductation/model-school-logo.png" alt="Govt Model senior secondary school Logo"
                             style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;" loading="lazy"
@@ -627,7 +630,7 @@
                     </div>
                 </div>
 
-                <div class="edu-card neu-flat scroll-animate slide-up delay-300">
+                <div class="edu-card neu-flat">
                     <div class="edu-logo" style="border: none; padding: 2px;"><img
                             src="assets/Eductation/sagritara-logo.png" alt="Sagritara School Logo"
                             style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;" loading="lazy"
@@ -643,7 +646,7 @@
             <!-- Education Cards (Portrait moved to intro for mobile wrapping) -->
 
             <!-- Portrait for Desktop/Laptop -->
-            <div class="about-portrait hide-on-mobile scroll-animate fade-in delay-200">
+            <div class="about-portrait hide-on-mobile">
                 <img src="assets/Website%20Assets/v46_28(1).png" alt="Zahangir portrait illustration" loading="lazy"
                     decoding="async">
             </div>
@@ -654,7 +657,7 @@
                 style="position: relative;">
                 <!-- Huge Background Poly from Home -->
                 <div class="deco huge-poly-deco" data-speed="10"
-                    style="position: absolute; right: -25vw; top: -400px; width: 800px; height: 800px; z-index: 0; pointer-events: auto;">
+                    style="position: absolute; right: -25dvw; top: -400px; width: 800px; height: 800px; z-index: 0; pointer-events: auto;">
                     <div class="three-shape" data-shape="poly"></div>
                 </div>
                 <!-- Small foregroud shapes moved to Home -->
@@ -743,15 +746,12 @@
         <div class="deco huge-cube-deco">
             <div class="three-shape" data-shape="cube"></div>
         </div>
-        <h2 class="section-title font-script scroll-animate slide-up" data-speed="-5">Projects</h2>
-        <div class="deco huge-rhombi-deco">
-            <div class="three-shape" data-shape="rhombicosidodecahedron"></div>
-        </div>
+        <h2 class="section-title font-script" data-speed="-5">Projects</h2>
         <div class="projects-container" style="position: relative;">
             <!-- Sphere Decoration moved inside container for better alignment with opposite side -->
 
             <div class="projects-grid">
-                <div class="project-card scroll-animate fade-in delay-100" id="proj1">
+                <div class="project-card" id="proj1">
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
@@ -905,7 +905,7 @@
 
                     </div>
                 </div>
-                <div class="project-card scroll-animate slide-up delay-100" id="proj2">
+                <div class="project-card" id="proj2">
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
@@ -1074,7 +1074,7 @@
 
                     </div>
                 </div>
-                <div class="project-card scroll-animate slide-up delay-200" id="proj3">
+                <div class="project-card" id="proj3">
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
@@ -1246,7 +1246,7 @@
 
                     </div>
                 </div>
-                <div class="project-card scroll-animate slide-up delay-400" id="proj4">
+                <div class="project-card" id="proj4">
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
@@ -1417,7 +1417,7 @@
 
                     </div>
                 </div>
-                <div class="project-card scroll-animate slide-up delay-400" id="proj5">
+                <div class="project-card" id="proj5">
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
@@ -1563,7 +1563,7 @@
 
                     </div>
                 </div>
-                <div class="project-card scroll-animate slide-up delay-500" id="proj6">
+                <div class="project-card" id="proj6">
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
@@ -1721,7 +1721,7 @@
 
                     </div>
                 </div>
-                <div class="project-card scroll-animate slide-up delay-500" id="proj7">
+                <div class="project-card" id="proj7">
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
@@ -1896,7 +1896,7 @@
 
                     </div>
                 </div>
-                <div class="project-card neu-flat scroll-animate slide-up delay-600" id="proj8">
+                <div class="project-card neu-flat" id="proj8">
                     <button class="project-close-btn neu-btn" aria-label="Close project">
                         <i class="fas fa-times"></i>
                     </button>
@@ -2094,12 +2094,12 @@
             <div class="three-shape" data-shape="sphere"></div>
         </div>
 
-        <h2 class="section-title font-script scroll-animate slide-up" data-speed="-5">Connect</h2>
+        <h2 class="section-title font-script" data-speed="-5">Connect</h2>
 
         <div class="connect-grid">
 
             <!-- Column 1: Form -->
-            <div class="contact-area scroll-animate slide-up delay-100">
+            <div class="contact-area">
                 <h3 class="subsection-title font-script">Get in touch:-</h3>
                 <form class="contact-form-container neu-flat" onsubmit="handleSubmit(event)">
                     <div class="form-group">

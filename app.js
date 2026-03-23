@@ -813,13 +813,21 @@ function initScrollParallax() {
     if (parallaxElements.length === 0) return;
 
     // Use Lenis scroll event for synchronized parallax
-    lenis.on('scroll', ({ scroll }) => {
+    lenis.on('scroll', ({ scroll, limit, velocity }) => {
+        // 1. Parallax Elements
         parallaxElements.forEach(el => {
             const speed = parseFloat(el.getAttribute('data-speed')) || 0;
-            // The factor 0.1 is for subtleness, speed is the direction/intensity
             const yPos = (scroll * speed) / 100;
-            el.style.transform = `translate3d(0, ${yPos}px, 0)`;
+            
+            // Add a very subtle rotation based on velocity for "floating" feel
+            const rot = velocity * 0.01 * (speed / 10);
+            el.style.transform = `translate3d(0, ${yPos}px, 0) rotate(${rot}deg)`;
         });
+
+
+        // 3. Page Tilt (Subtle)
+        const tilt = velocity * 0.002;
+        // document.body.style.transform = `rotateX(${tilt}deg)`; // Too intense? Let's use it on a wrapper if needed
     });
 }
 
