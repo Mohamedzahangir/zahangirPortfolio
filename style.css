@@ -12,13 +12,16 @@
     /* Neumorphic Shadows for Light Mode */
     --shadow-dark: #d5d5c8;
     --shadow-light: #ffffff;
+    --mid-shadow: rgba(26, 26, 26, 0.35);
+    --border-color: #1A1A1A;
     --footer-bg: #FBF6E2;
 
     /* Layout Constants */
     --max-width: 1200px;
 
     /* Background Grid */
-    --grid-color: rgba(26, 26, 26, 0.05); /* Very subtle */
+    --grid-color: rgba(26, 26, 26, 0.05);
+    /* Very subtle */
 }
 
 body.dark-mode {
@@ -30,9 +33,12 @@ body.dark-mode {
     /* Neumorphic Shadows for Dark Mode */
     --shadow-dark: #121212;
     --shadow-light: #2a2a2a;
+    --mid-shadow: rgba(0, 0, 0, 0.7);
+    --border-color: #F1F1E6;
     --footer-bg: #2b2b2b;
     /* Slightly darker than new background #3D3D3D for contrast */
-    --grid-color: rgba(241, 241, 230, 0.03); /* Even subtler in dark mode */
+    --grid-color: rgba(255, 255, 255, 0.08);
+    /* White with higher opacity for dark mode */
 }
 
 /* ===== RESET ===== */
@@ -52,7 +58,6 @@ body {
     color: var(--text-dark);
     overflow-x: hidden;
     transition: background 0.3s, color 0.3s;
-    perspective: 1200px; /* Base for depth effects */
 }
 
 body.no-scroll {
@@ -97,52 +102,51 @@ body.dark-mode .doodle-img {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2; /* Behind everything including decorations */
+    z-index: -2;
+    /* Behind everything including decorations */
     pointer-events: none;
-    background-image: 
+    background-image:
         linear-gradient(var(--grid-color) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-    background-size: 80px 80px; /* Large architectural grid */
+    background-size: 80px 80px;
+    /* Large architectural grid */
 }
 
 
-/* ===== NEUMORPHIC UTILITIES ===== */
+/* ===== HARD 3D UTILITIES ===== */
 .neu-flat {
     background: var(--bg);
-    box-shadow: 6px 6px 14px var(--shadow-dark),
-        -6px -6px 14px var(--shadow-light);
-    border-radius: 16px;
+    box-shadow: 4px 4px 8px var(--mid-shadow);
+    border: none;
+    border-radius: 12px;
     transition: box-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease;
 }
 
 .neu-btn {
     background: var(--bg);
-    box-shadow: 5px 5px 10px var(--shadow-dark),
-        -5px -5px 10px var(--shadow-light);
-    border-radius: 12px;
+    box-shadow: 3px 3px 6px var(--mid-shadow);
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
     transition: box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
-    border: none;
     color: var(--text-dark);
 }
 
 .neu-btn:hover {
-    box-shadow: 8px 8px 16px var(--shadow-dark),
-        -8px -8px 16px var(--shadow-light);
-    transform: translateY(-3px) scale(1.02);
+    box-shadow: 5px 5px 10px var(--mid-shadow);
+    transform: translate(-1px, -1px);
 }
 
 .neu-btn:active {
-    box-shadow: inset 4px 4px 8px var(--shadow-dark),
-        inset -4px -4px 8px var(--shadow-light);
+    box-shadow: 1px 1px 2px var(--mid-shadow);
+    transform: translate(2px, 2px);
 }
 
 .neu-inset {
     background: var(--bg);
-    box-shadow: inset 5px 5px 10px var(--shadow-dark),
-        inset -5px -5px 10px var(--shadow-light);
-    border-radius: 12px;
+    box-shadow: inset 3px 3px 6px var(--mid-shadow);
     border: none;
+    border-radius: 8px;
     color: var(--text-dark);
 }
 
@@ -207,13 +211,40 @@ body.dark-mode .doodle-img {
 
 @media (max-width: 767.98px) {
     .home-stats {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 25px;
-        margin-top: 30px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 20px;
     }
+
     .stat-divider {
+        display: block;
+        height: 30px;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    .stat-value {
+        font-size: 1.2rem;
+    }
+
+    .hero-desc {
         display: none;
+    }
+
+    /* Reduce gaps under section titles */
+    #connect .section-title,
+    #projects .section-title {
+        margin-bottom: 15px;
+    }
+
+    /* Reduce form top gap */
+    .contact-area .subsection-title {
+        margin-top: 0;
+        margin-bottom: 15px;
     }
 }
 
@@ -224,7 +255,12 @@ body.dark-mode .doodle-img {
     left: 0;
     width: 100%;
     height: 80px;
-    background: var(--bg);
+    background-color: var(--bg);
+    background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 80px 80px;
+    background-position: top center;
     /* Semi-transparent neumorphism maybe, keeping opaque for now */
     display: flex;
     align-items: center;
@@ -250,7 +286,8 @@ body.dark-mode .logo-img {
 .nav-links {
     display: flex;
     gap: 30px;
-    position: relative; /* For indicator */
+    position: relative;
+    /* For indicator */
 }
 
 .nav-link {
@@ -271,7 +308,8 @@ body.dark-mode .logo-img {
     color: var(--text-dark);
     transform: scale(1.15) translateY(-2px);
     letter-spacing: 1px;
-    font-style: italic; /* The 'morphing' effect */
+    font-style: italic;
+    /* The 'morphing' effect */
 }
 
 
@@ -383,12 +421,12 @@ body.dark-mode .moon-icon {
     position: absolute;
     bottom: 10px;
     /* Fully on screen */
-    left: 80%;
+    left: 70%;
     /* Positioned between portrait and text */
-    transform: translateX(-20%);
+    transform: translateX(-10%);
     width: 320px;
     height: 320px;
-    z-index: 4;
+    z-index: 1;
     pointer-events: auto;
     will-change: transform;
 }
@@ -401,8 +439,10 @@ body.dark-mode .moon-icon {
 
 .sphere-deco {
     position: absolute;
-    top: 10%; /* More and more up */
-    right: -150px; /* More right */
+    top: 10%;
+    /* More and more up */
+    right: -150px;
+    /* More right */
     width: 300px;
     height: 300px;
     transform: translateY(-50%);
@@ -413,7 +453,7 @@ body.dark-mode .moon-icon {
 .octahedron-deco {
     position: absolute;
     bottom: 100px;
-    top: 50%;
+    top: -50%;
     left: -150px;
     /* Adjusted left position for larger size */
     width: 200px;
@@ -457,12 +497,33 @@ body.dark-mode .moon-icon {
 /* Huge 3D Decorators */
 .huge-poly-deco {
     position: absolute;
-    top: -300px; /* Moved up to avoid overlap with projects */
+    top: -300px;
+    /* Moved up to avoid overlap with projects */
     right: -25dvw;
     width: 800px;
     height: 800px;
     z-index: 1;
     pointer-events: auto;
+}
+
+.huge-cube-deco {
+    position: absolute;
+    top: 30%;
+    left: -20dvw;
+    width: 800px;
+    height: 800px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.rhob-deco {
+    position: absolute;
+    top: -75%;
+    right: -18dvw;
+    width: 750px;
+    height: 750px;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .huge-cube-deco {
@@ -773,7 +834,7 @@ body.dark-mode .pupil {
 .edu-card:hover {
     transform: translateY(-5px);
     box-shadow: 8px 8px 16px var(--shadow-dark),
-               -8px -8px 16px var(--shadow-light);
+        -8px -8px 16px var(--shadow-light);
 }
 
 .about-portrait {
@@ -928,7 +989,7 @@ body.dark-mode .pupil {
 .project-card:not(.is-expanded):hover {
     transform: translateY(-8px) scale(1.01);
     box-shadow: 12px 12px 25px var(--shadow-dark),
-               -12px -12px 25px var(--shadow-light);
+        -12px -12px 25px var(--shadow-light);
 }
 
 /* Kill CSS transitions during GSAP Flip to avoid layout jitter */
@@ -1119,7 +1180,7 @@ body.dark-mode .pupil {
 
 .form-input:hover {
     box-shadow: inset 6px 6px 12px var(--shadow-dark),
-                inset -6px -6px 12px var(--shadow-light);
+        inset -6px -6px 12px var(--shadow-light);
 }
 
 .form-input::placeholder {
@@ -1619,13 +1680,11 @@ textarea.form-input {
     }
 
     .submit-btn {
-        position: absolute;
-        bottom: 15px;
-        right: 15px;
-        width: 40px;
-        height: 40px;
-        margin: 0;
-        font-size: 1rem;
+        position: static;
+        width: 100%;
+        margin-top: 15px;
+        height: 50px;
+        font-size: 1.1rem;
     }
 
     .connect-socials,
