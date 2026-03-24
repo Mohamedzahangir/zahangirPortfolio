@@ -296,6 +296,7 @@ body.dark-mode .logo-img {
     color: var(--text-mid);
     position: relative;
     transition: color 0.3s, transform 0.2s;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 .nav-link:hover {
@@ -331,6 +332,7 @@ body.dark-mode .logo-img {
     overflow: hidden;
     /* Hide the icons as they rotate out of view */
     position: relative;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .toggle-wheel {
@@ -523,7 +525,7 @@ body.dark-mode .moon-icon {
     width: 750px;
     height: 750px;
     z-index: 0;
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .huge-cube-deco {
@@ -663,6 +665,7 @@ body.dark-mode .pupil {
     color: var(--text-dark);
     line-height: 1;
     margin-bottom: 5px;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .hero-name {
@@ -671,6 +674,7 @@ body.dark-mode .pupil {
     color: var(--text-dark);
     line-height: 1.1;
     margin-bottom: 25px;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .hero-desc {
@@ -692,6 +696,7 @@ body.dark-mode .pupil {
     font-size: 1rem;
     font-family: 'Caveat', cursive;
     letter-spacing: 0.5px;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .home-scroll-down {
@@ -709,6 +714,7 @@ body.dark-mode .pupil {
     color: var(--text-dark);
     margin-bottom: 20px;
     letter-spacing: 1px;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .about-grid {
@@ -724,6 +730,7 @@ body.dark-mode .pupil {
     color: var(--text-dark);
     margin-bottom: 15px;
     margin-top: 0;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .about-text {
@@ -756,12 +763,12 @@ body.dark-mode .pupil {
     display: flex;
     align-items: center;
     justify-content: center;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .skill-pill:hover {
     transform: translateY(-4px) scale(1.08);
-    box-shadow: 10px 10px 20px var(--shadow-dark),
-        -10px -10px 20px var(--shadow-light);
+    box-shadow: 10px 10px 20px var(--shadow-dark);
 }
 
 .show-more-skills-btn {
@@ -792,6 +799,7 @@ body.dark-mode .pupil {
     align-items: center;
     gap: 15px;
     padding: 15px;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .edu-logo {
@@ -833,8 +841,7 @@ body.dark-mode .pupil {
 
 .edu-card:hover {
     transform: translateY(-5px);
-    box-shadow: 8px 8px 16px var(--shadow-dark),
-        -8px -8px 16px var(--shadow-light);
+    box-shadow: 8px 8px 16px var(--shadow-dark);
 }
 
 .about-portrait {
@@ -984,12 +991,12 @@ body.dark-mode .pupil {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .project-card:not(.is-expanded):hover {
     transform: translateY(-8px) scale(1.01);
-    box-shadow: 12px 12px 25px var(--shadow-dark),
-        -12px -12px 25px var(--shadow-light);
+    box-shadow: 12px 12px 25px var(--shadow-dark);
 }
 
 /* Kill CSS transitions during GSAP Flip to avoid layout jitter */
@@ -1163,6 +1170,7 @@ body.dark-mode .pupil {
 /* Big Neumorphic Form Container */
 .contact-form-container {
     padding: 40px;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .form-group {
@@ -1176,11 +1184,11 @@ body.dark-mode .pupil {
     font-size: 1.3rem;
     color: var(--text-dark);
     transition: box-shadow 0.3s ease;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .form-input:hover {
-    box-shadow: inset 6px 6px 12px var(--shadow-dark),
-        inset -6px -6px 12px var(--shadow-light);
+    box-shadow: inset 6px 6px 12px var(--shadow-dark);
 }
 
 .form-input::placeholder {
@@ -1219,6 +1227,7 @@ textarea.form-input {
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.15));
 }
 
 .connect-portrait {
