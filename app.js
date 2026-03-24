@@ -76,44 +76,6 @@ window.addEventListener('load', () => {
                 }
             }
 
-            // --- INTERACTION HINT LOGIC ---
-            const hint = document.getElementById('interactionHint');
-            if (!hint) return;
-
-            let hasInteracted = false;
-            let fadeOutTimeout = null;
-            let idleTimeout = null;
-
-            const handleInteraction = () => {
-                if (hasInteracted) return;
-                hasInteracted = true;
-
-                clearTimeout(idleTimeout);
-                hint.classList.add('fade-out');
-
-                // Remove listeners after first interaction
-                ['mousedown', 'mousemove', 'touchstart', 'wheel'].forEach(evt => {
-                    document.removeEventListener(evt, handleInteraction);
-                });
-            };
-
-            // Show hint 1s after loader finishes (3.2s draw + 1.2s flight + 1s delay)
-            // Wait for the total loader sequence to end
-            setTimeout(() => {
-                hint.classList.add('visible');
-
-                // After 3s of visibility, if no interaction, go idle
-                idleTimeout = setTimeout(() => {
-                    if (!hasInteracted) {
-                        hint.classList.add('idle');
-                    }
-                }, 3000);
-
-                // Listen for ANY interaction to kill the hint
-                ['mousedown', 'mousemove', 'touchstart', 'wheel'].forEach(evt => {
-                    document.addEventListener(evt, handleInteraction, { once: true, passive: true });
-                });
-            }, 1100); // ~1.1s buffer after loader sequence (3.2 + 1.2 = 4.4s, so 5.5s total from page load)
 
         }, 1200); // Wait 1.2s for the transform to finish
 
@@ -687,7 +649,12 @@ function initThreeJS() {
         renderer.domElement.style.height = '100%';
         container.appendChild(renderer.domElement);
 
-        return { scene, camera, mesh, renderer, container, visible: false };
+        // Inject Localized Hint Element
+        const hintEl = document.createElement('div');
+        hintEl.className = 'three-hint font-sans';
+        container.appendChild(hintEl);
+
+        return { scene, camera, mesh, renderer, container, hintEl, visible: false };
     }
 
     function setupInteraction(container, velRef) {
@@ -704,6 +671,7 @@ function initThreeJS() {
 
         const onPointerDown = (e) => {
             isDragging = true;
+            window.hasInteractedWithThree = true; // Signal to stop periodic hints
             container.style.cursor = 'grabbing';
             lastPos = getPos(e);
             if (e.type === 'touchstart') e.preventDefault();
@@ -805,6 +773,57 @@ function initThreeJS() {
         });
     });
     themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    // --- PERIODIC INTERACTION HINTS ---
+    const hintMessages = ["drag to explore", "speed reveals complexity", "try to rotate"];
+    const hintPositions = ["top", "bottom", "left", "right"];
+    let currentMsgIndex = 0;
+    window.hasInteractedWithThree = false;
+
+    function cycleHints() {
+        if (window.hasInteractedWithThree || document.body.classList.contains('wait-for-loader')) return;
+
+        // Find all visible objects that aren't already showing a hint
+        const visibleObjects = threeObjects.filter(obj => obj.visible);
+        if (visibleObjects.length === 0) return;
+
+        // Pick a random visible object
+        const targetObj = visibleObjects[Math.floor(Math.random() * visibleObjects.length)];
+        
+        // Pick next message and random position
+        const msg = hintMessages[currentMsgIndex];
+        const pos = hintPositions[Math.floor(Math.random() * hintPositions.length)];
+        currentMsgIndex = (currentMsgIndex + 1) % hintMessages.length;
+
+        // Reset positions and set new one
+        targetObj.hintEl.classList.remove('top', 'bottom', 'left', 'right');
+        targetObj.hintEl.classList.add(pos);
+        
+        // Show hint
+        targetObj.hintEl.textContent = msg;
+        targetObj.hintEl.classList.add('show');
+
+        // Hide after 3.5 seconds
+        setTimeout(() => {
+            targetObj.hintEl.classList.remove('show');
+        }, 3500);
+    }
+
+    // Start cycling hints after initial delay (8s after page load roughly)
+    setTimeout(() => {
+        if (!window.hasInteractedWithThree) {
+            // Initial one
+            cycleHints();
+            // Then every 10 seconds
+            const hintInterval = setInterval(() => {
+                if (window.hasInteractedWithThree) {
+                    clearInterval(hintInterval);
+                    return;
+                }
+                cycleHints();
+            }, 10000);
+        }
+    }, 5000);
 }
 
 // --- SCROLL PARALLAX EFFECT ---

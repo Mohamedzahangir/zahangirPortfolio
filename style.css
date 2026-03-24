@@ -1929,50 +1929,94 @@ textarea.form-input {
     }
 }
 
-@media (max-width: 600px) {}
-
 /* Ensure canvases are transparent and fill container */
 .three-shape canvas {
     background: transparent !important;
     display: block;
 }
 
-/* ===== INTERACTION HINT ===== */
-.interaction-hint {
+/* ===== LOCALIZED 3D INTERACTION HINT (Multi-Position Speech Bubble) ===== */
+.three-shape {
+    position: relative; /* Container for localized hint */
+}
+
+.three-hint {
     position: absolute;
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem; /* Increased size */
+    color: var(--text-dark);
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 15;
+    padding: 10px 18px; /* Increased box size */
+    background: var(--bg);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15); /* Hard offset shadow matching site theme */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Position Variants */
+.three-hint.top {
+    bottom: calc(100% + 10px);
     left: 50%;
     transform: translateX(-50%) translateY(10px);
-    top: 68dvh;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.6);
-    opacity: 0;
-    text-align: center;
-    letter-spacing: 1.2px;
-    line-height: 1.6;
-    pointer-events: none;
-    z-index: 10;
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.three-hint.bottom {
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+}
+.three-hint.left {
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+}
+.three-hint.right {
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-10px);
 }
 
-.interaction-hint.visible {
-    opacity: 0.6;
-    transform: translateX(-50%) translateY(0);
+/* Show states for each position to maintain correct centering */
+.three-hint.top.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.three-hint.bottom.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.three-hint.left.show { opacity: 1; transform: translateY(-50%) translateX(0); }
+.three-hint.right.show { opacity: 1; transform: translateY(-50%) translateX(0); }
+
+/* Speech Bubble Tails */
+.three-hint::after {
+    content: '';
+    position: absolute;
+    border: 8px solid transparent;
 }
 
-.interaction-hint.fade-out {
-    opacity: 0 !important;
-    transition: opacity 0.35s ease-out !important;
+/* Tail for TOP (points down) */
+.three-hint.top::after {
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: var(--bg);
 }
-
-.interaction-hint.idle {
-    opacity: 0.2;
+/* Tail for BOTTOM (points up) */
+.three-hint.bottom::after {
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: var(--bg);
 }
-
-@media (max-width: 767.98px) {
-    .interaction-hint {
-        top: 72dvh;
-        font-size: 13px;
-    }
+/* Tail for LEFT (points right) */
+.three-hint.left::after {
+    right: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: var(--bg);
+}
+/* Tail for RIGHT (points left) */
+.three-hint.right::after {
+    left: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right-color: var(--bg);
 }
