@@ -1332,7 +1332,32 @@ textarea.form-input {
     }
 
     .section {
-        padding: 30px 20px 20px 20px;
+        padding: 40px 20px 30px 20px; /* Standardize mobile section padding */
+    }
+
+    /* ID overrides to fix specificity gaps */
+    #projects {
+        padding-top: 40px !important;
+        padding-bottom: 40px !important;
+    }
+
+    #connect {
+        padding-top: 10px !important;
+        padding-bottom: 20px !important;
+    }
+
+    #connect .section-title {
+        margin-bottom: 0 !important;
+        transform: none !important; /* Fixed: Stop parallax from creating a gap and overlapping */
+    }
+
+    .contact-area .subsection-title {
+        margin-top: 0 !important;
+        margin-bottom: 10px !important;
+    }
+
+    #about {
+        padding-top: 50px !important;
     }
 
     .deco img {
